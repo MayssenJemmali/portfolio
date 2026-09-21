@@ -1,0 +1,78 @@
+import {
+  Braces,
+  BrainCircuit,
+  Boxes,
+  Cloud,
+  CodeXml,
+  Database,
+  GitPullRequestArrow,
+  Network,
+  Search,
+  TestTube2,
+  Workflow,
+} from "lucide-react";
+const brandIcons: Record<string, string> = {
+  Python: "/icons/tech/python.svg",
+  FastAPI: "/icons/tech/fastapi.svg",
+  PostgreSQL: "/icons/tech/postgresql.svg",
+  Docker: "/icons/tech/docker.svg",
+  Java: "/icons/tech/openjdk.svg",
+  "Spring Boot": "/icons/tech/springboot.svg",
+  Kafka: "/icons/tech/apachekafka.svg",
+  "CI/CD": "/icons/tech/githubactions.svg",
+  Linux: "/icons/tech/linux.svg",
+  TypeScript: "/icons/tech/typescript.svg",
+  "Node.js": "/icons/tech/nodedotjs.svg",
+  GitHub: "/icons/tech/github.svg",
+  LinkedIn: "/icons/tech/linkedin.svg",
+};
+
+const conceptIcons = {
+  AI: BrainCircuit,
+  search: Search,
+  data: Database,
+  architecture: Boxes,
+  workflow: Workflow,
+  network: Network,
+  testing: TestTube2,
+  cloud: Cloud,
+  delivery: GitPullRequestArrow,
+  code: CodeXml,
+  api: Braces,
+};
+
+function conceptFor(name: string) {
+  const value = name.toLowerCase();
+  if (value.includes("rag") || value.includes("embedding") || value.includes("evaluation")) return conceptIcons.AI;
+  if (value.includes("search")) return conceptIcons.search;
+  if (value.includes("database") || value.includes("data model")) return conceptIcons.data;
+  if (value.includes("architect") || value.includes("system design")) return conceptIcons.architecture;
+  if (value.includes("messag") || value.includes("collaboration")) return conceptIcons.network;
+  if (value.includes("test")) return conceptIcons.testing;
+  if (value.includes("cloud")) return conceptIcons.cloud;
+  if (value.includes("devops") || value.includes("delivery")) return conceptIcons.delivery;
+  if (value.includes("api") || value.includes("backend")) return conceptIcons.api;
+  return conceptIcons.code;
+}
+
+export function TechnologyIcon({ name }: { name: string }) {
+  const brand = brandIcons[name];
+
+  if (brand) {
+    return (
+      <img
+        className="technology-icon"
+        src={brand}
+        alt=""
+        width="18"
+        height="18"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+    );
+  }
+
+  const ConceptIcon = conceptFor(name);
+  return <ConceptIcon className="technology-icon" aria-hidden="true" />;
+}
