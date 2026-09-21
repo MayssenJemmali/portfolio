@@ -48,7 +48,7 @@ export const projects: Project[] = [
       alt: "Abstract editorial diagram of documents flowing through an AI retrieval system",
     },
     date: "20XX",
-    highlights: ["Replace with one specific engineering decision or verified outcome."],
+    highlights: [],
   },
   {
     id: "service-platform",
@@ -61,7 +61,7 @@ export const projects: Project[] = [
       alt: "Abstract editorial diagram of services, queues, and databases",
     },
     date: "20XX",
-    highlights: ["Replace with a real architecture tradeoff, constraint, or result."],
+    highlights: [],
   },
   {
     id: "delivery-pipeline",
@@ -74,7 +74,7 @@ export const projects: Project[] = [
       alt: "Abstract editorial diagram of containers moving through a deployment pipeline",
     },
     date: "20XX",
-    highlights: ["Replace with a real reliability improvement or delivery decision."],
+    highlights: [],
   },
   {
     id: "semantic-search",
@@ -87,7 +87,7 @@ export const projects: Project[] = [
       alt: "Abstract editorial illustration of a structured archive being searched",
     },
     date: "20XX",
-    highlights: ["Replace with a verified evaluation detail or user-facing improvement."],
+    highlights: [],
   },
 ];
 
