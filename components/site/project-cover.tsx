@@ -91,7 +91,7 @@ export function ProjectCover({ images }: { images: CoverImage[] }) {
         alt={shown.alt}
         width={shown.width ?? 1536}
         height={shown.height ?? 864}
-        loading="eager"
+        loading="lazy"
         decoding="async"
         onLoad={() => setFirstReady(true)}
       />

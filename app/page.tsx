@@ -18,7 +18,7 @@ export default function Home() {
       <Navigation resumeUrl={profile.resumeUrl} />
 
       <main id="content">
-        <section className="hero" id="top" aria-labelledby="hero-title">
+        <section className="hero" id="about" aria-labelledby="hero-title">
           <div className="hero-grid">
             <div className="hero-copy">
               <h1 id="hero-title">Hey, I&apos;m <span>Mayssen Jemmali.</span></h1>
@@ -99,28 +99,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section about-section" id="about" aria-labelledby="about-title">
-          <Reveal>
-            <SectionHeading
-              title="About Me"
-              id="about-title"
-            />
-          </Reveal>
-          <Reveal className="about-grid">
-            <p className="about-lead">
-              My work connects software engineering, AI, architecture, and delivery.
-            </p>
-            <div className="about-copy">
-              <p>
-                I&apos;m a software engineering student interested in turning complex technical ideas into systems that are understandable, testable, and useful beyond a demo.
-              </p>
-              <p>
-                I care about the decisions behind the interface: data flow, architecture, model behavior, reliability, and how software reaches production.
-              </p>
-            </div>
-          </Reveal>
-        </section>
-
         <section className="section contact-section" id="contact" aria-labelledby="contact-title">
           <Reveal>
             <SectionHeading title="Contact" id="contact-title" />
@@ -152,7 +130,7 @@ export default function Home() {
 
       <footer className="site-footer">
         <p>{profile.name} / {profile.role}</p>
-        <a href="#top">Back to top <ArrowUpRight aria-hidden="true" /></a>
+        <a href="#about">Back to top <ArrowUpRight aria-hidden="true" /></a>
       </footer>
 
       <noscript>

@@ -103,6 +103,26 @@ export default function SmartPfePage() {
               <p>A few screens from the student journey, from planning through report writing and defense practice.</p>
               <ProjectGallery images={smartPfeDetail.gallery} />
             </section>
+
+            <section className="case-section" aria-labelledby="smartpfe-repositories">
+              <h2 id="smartpfe-repositories">Project repositories</h2>
+              <ul className="case-repository-grid case-repository-grid-three">
+                {smartPfeDetail.repositories.map((repository) => (
+                  <li key={repository.url}>
+                    <a className="case-repository-card" href={repository.url} target="_blank" rel="noreferrer" aria-label={`${repository.title} on GitHub (opens in a new tab)`}>
+                      <span className="case-repository-copy">
+                        <span className="case-repository-title">
+                          <TechnologyIcon name="GitHub" />
+                          {repository.title}
+                        </span>
+                        <span className="case-repository-detail">{repository.detail}</span>
+                      </span>
+                      <ArrowUpRight className="case-repository-arrow" aria-hidden="true" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
           </article>
 
           <footer className="case-footer">

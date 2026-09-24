@@ -8,7 +8,7 @@ This portfolio is an **editorial neobrutalist engineering dossier**: direct, str
 
 The recruiter flow is:
 
-**Identity → Selected Projects → Professional Experience → Technical Skills → About Me → Contact**
+**About / Identity → Selected Projects → Professional Experience → Technical Skills → Contact**
 
 Every element must either improve comprehension, hierarchy, navigation, or personality. Decoration without a clear purpose should be removed.
 
@@ -41,6 +41,7 @@ Visible copy must be plain and specific. Prefer headings such as “Selected Pro
 
 - Keep the sticky navigation compact.
 - Main section links remain centered.
+- About points to the hero and is active when the page first opens.
 - Do not add a logo, initials, or the owner’s name to the navbar.
 - The résumé action remains separate on the right.
 - The active section uses the orange accent.
@@ -48,7 +49,7 @@ Visible copy must be plain and specific. Prefer headings such as “Selected Pro
 
 ## Hero
 
-The hero is a compact top section, not a forced full-screen experience. Never restore `100vh`, `100svh`, or another minimum viewport height.
+The hero is a compact top section, not a forced full-screen experience. Never restore `100vh`, `100svh`, or another minimum viewport height. The hero is the About section; do not add a second About section lower on the page.
 
 Current content hierarchy:
 
@@ -108,7 +109,7 @@ When a GitHub or demo URL is absent, keep the action visible but disabled. Never
 
 ## Sections
 
-- Section titles are direct: “Selected Projects,” “Professional Experience,” “Technical Skills,” “About Me,” and “Contact.”
+- Section titles are direct: “Selected Projects,” “Professional Experience,” “Technical Skills,” and “Contact.” The hero serves as About.
 - Do not restore labels such as `00 / Introduction`, numeric section prefixes, or numeric skill/experience decorations.
 - Use consistent content width (`76rem`), section rhythm, and border alignment.
 - Experience remains a readable timeline/list rather than cards.
@@ -167,4 +168,3 @@ Check:
 4. Does it remain compact and readable on desktop and mobile?
 5. Is every new visual element useful rather than merely decorative?
 6. Are all claims and links real or clearly marked as placeholders?
-

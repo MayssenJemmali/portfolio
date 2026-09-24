@@ -57,14 +57,11 @@ export default function AnnonceTnPage() {
               <div className="case-actions">
                 {project.githubUrl && (
                   <Button asChild className="neo-button">
-                    <a href={project.githubUrl} target="_blank" rel="noreferrer">
-                      <TechnologyIcon name="GitHub" /> GitHub project <ArrowUpRight aria-hidden="true" />
+                    <a href={project.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub repositories (opens in a new tab)">
+                      <TechnologyIcon name="GitHub" /> GitHub repositories <ArrowUpRight aria-hidden="true" />
                     </a>
                   </Button>
                 )}
-                <Button asChild variant="outline" className="neo-button">
-                  <a href="#repositories">Explore the repositories <ArrowUpRight aria-hidden="true" /></a>
-                </Button>
               </div>
             </header>
 
@@ -110,13 +107,19 @@ export default function AnnonceTnPage() {
 
             <section className="case-section" id="repositories" aria-labelledby="annoncetn-repositories">
               <h2 id="annoncetn-repositories">Project repositories</h2>
-              <ul className="case-bullets">
+              <ul className="case-repository-grid">
                 {annonceTnDetail.repositories.map((repository) => (
                   <li key={repository.url}>
-                    <a href={repository.url} target="_blank" rel="noreferrer">
-                      {repository.title} <ArrowUpRight aria-hidden="true" />
+                    <a className="case-repository-card" href={repository.url} target="_blank" rel="noreferrer" aria-label={`${repository.title} on GitHub (opens in a new tab)`}>
+                      <span className="case-repository-copy">
+                        <span className="case-repository-title">
+                          <TechnologyIcon name="GitHub" />
+                          {repository.title}
+                        </span>
+                        <span className="case-repository-detail">{repository.detail}</span>
+                      </span>
+                      <ArrowUpRight className="case-repository-arrow" aria-hidden="true" />
                     </a>
-                    {" "}{repository.detail}
                   </li>
                 ))}
               </ul>

@@ -169,7 +169,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
   /* visible by default on desktop */
 }
 
-.hero, .section { width: min(76rem, calc(100% - 2rem)); margin-inline: auto; }
+.hero, .section { width: min(76rem, calc(100% - 2rem)); margin-inline: auto; scroll-margin-top: 4.5rem; }
 .hero {
   display: flex;
   flex-direction: column;
@@ -225,7 +225,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
   transition: opacity 420ms ease var(--reveal-delay, 0ms), transform 420ms ease var(--reveal-delay, 0ms);
 }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
-#projects .reveal { opacity: 1; transform: none; transition: none; }
 
 .project-grid {
   display: grid;
@@ -308,6 +307,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
 .tag-list li { border: 1.5px solid var(--ink); background: var(--surface); padding: 0.25rem 0.45rem; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; border-radius: 0.125rem; }
 .technology-tag { display: inline-flex; align-items: center; gap: 0.35rem; }
 .technology-icon { width: 0.9rem; height: 0.9rem; flex: 0 0 auto; }
+.technology-icon--wordmark { width: 1.45rem; object-fit: contain; }
 .project-highlight {
   margin: 0.8rem 0 0;
   border-left: 3px solid var(--accent);
@@ -381,6 +381,17 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
 .case-bullets li { padding-left: 0.35rem; margin-bottom: 0.65rem; }
 .case-bullets li::marker { color: var(--accent); }
 .case-bullets-after-copy { margin-top: 1rem; }
+.case-repository-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
+.case-repository-grid-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.case-repository-grid li { min-width: 0; }
+.case-repository-card { display: flex; min-height: 100%; align-items: flex-start; justify-content: space-between; gap: 1rem; border: 2px solid var(--ink); border-radius: 0.25rem; background: var(--card); padding: 1rem; color: var(--ink); text-decoration: none; transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease; }
+.case-repository-card:hover { transform: translate(-2px, -2px); background: var(--surface); box-shadow: 4px 4px 0 var(--ink); }
+.case-repository-card:active { transform: translate(2px, 2px); box-shadow: none; }
+.case-repository-copy { display: grid; min-width: 0; gap: 0.4rem; }
+.case-repository-title { display: flex; align-items: center; gap: 0.55rem; font-size: 1.02rem; font-weight: 850; line-height: 1.35; }
+.case-repository-title .technology-icon { flex: 0 0 auto; width: 1rem; height: 1rem; }
+.case-repository-detail { color: #514d46; font-size: 0.95rem; line-height: 1.5; }
+.case-repository-arrow { flex: 0 0 auto; width: 1rem; height: 1rem; margin-top: 0.15rem; }
 .case-architecture { margin: 1.4rem 0 0; }
 .case-architecture-frame { position: relative; }
 .case-architecture-frame > img { display: block; width: 100%; height: auto; border: 2px solid var(--ink); background: #0b1220; box-shadow: var(--hard-shadow); }
@@ -430,12 +441,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
 .skill-group .tag-list { display: grid; }
 .skill-group .tag { width: fit-content; background: transparent; }
 
-.about-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(2rem, 8vw, 7rem); padding-left: calc((100% - 2rem) / 6); }
-.about-lead { margin: 0; font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-size: clamp(1.8rem, 3vw, 3rem); line-height: 1.05; letter-spacing: -0.04em; text-transform: uppercase; }
-.about-copy { max-width: 38rem; font-size: 1.1rem; }
-.about-copy p:first-child { margin-top: 0; }
-.about-copy p:last-child { margin-bottom: 0; }
-
 .contact-section { padding-bottom: clamp(5rem, 10vw, 9rem); }
 .contact-panel { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.55fr); gap: clamp(2rem, 8vw, 7rem); border: 2px solid var(--ink); background: var(--accent); padding: clamp(1.5rem, 5vw, 4rem); box-shadow: 8px 8px 0 var(--ink); }
 .contact-panel h3 { max-width: 13ch; margin: 0; font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-size: clamp(2.7rem, 6vw, 6.5rem); line-height: 0.9; letter-spacing: -0.06em; text-transform: uppercase; }
@@ -473,7 +478,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
     display: flex !important;
     align-items: center;
   }
-  .hero-grid, .about-grid, .contact-panel { grid-template-columns: 1fr; }
+  .hero-grid, .contact-panel { grid-template-columns: 1fr; }
   .hero { padding-top: 1.25rem; }
   .hero h1 { font-size: clamp(2.35rem, 11.5vw, 3.4rem); letter-spacing: -0.065em; }
   .portrait-panel { min-height: 20rem; margin-top: 1rem; }
@@ -482,9 +487,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
   .skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-right: 6px; }
   .skill-grid > .reveal:nth-child(2) { border-right: 0; }
   .skill-grid > .reveal:nth-child(-n + 2) { border-bottom: 2px solid var(--ink); }
-  .about-grid { padding-left: 0; }
   .contact-secondary { grid-template-columns: 1fr; }
   .contact-secondary > *:not(:last-child) { border-right: 0; border-bottom: 2px solid var(--ink); }
+}
+
+@media (max-width: 900px) {
+  .case-repository-grid-three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .case-repository-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {

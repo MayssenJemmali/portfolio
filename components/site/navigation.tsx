@@ -6,15 +6,15 @@ import { cn } from "@/lib/utils";
 import { ThemeColorPicker } from "./theme-color-picker";
 
 const navigationItems = [
+  { id: "about", label: "About" },
   { id: "projects", label: "Projects" },
   { id: "experience", label: "Experience" },
   { id: "skills", label: "Skills" },
-  { id: "about", label: "About" },
   { id: "contact", label: "Contact" },
 ];
 
 export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: string }) {
-  const [active, setActive] = useState("projects");
+  const [active, setActive] = useState("about");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [indicatorStyle, setIndicatorStyle] = useState<{
     left: number;
@@ -38,19 +38,27 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
     const sections = navigationItems
       .map(({ id }) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
+    let frame = 0;
+    const updateActive = () => {
+      frame = 0;
+      const marker = Math.min(window.innerHeight * 0.3, 240);
+      const current = sections.reduce((found, section) =>
+        section.getBoundingClientRect().top <= marker ? section.id : found,
+      sections[0]?.id ?? "about");
+      setActive(current);
+    };
+    const scheduleUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateActive);
+    };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const current = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (current) setActive(current.target.id);
-      },
-      { rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.2, 0.5] },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    updateActive();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {

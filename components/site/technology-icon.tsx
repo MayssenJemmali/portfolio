@@ -31,6 +31,10 @@ const brandIcons: Record<string, string> = {
   Linux: "/icons/tech/linux.svg",
   TypeScript: "/icons/tech/typescript-devicon.svg",
   "Node.js": "/icons/tech/nodedotjs.svg",
+  Symfony: "/icons/tech/symfony-original.svg",
+  PHP: "/icons/tech/php-original.svg",
+  MySQL: "/icons/tech/mysql-original.svg",
+  "Amadeus API": "/icons/tech/amadeus-logo.svg",
   GitHub: "/icons/tech/github.svg",
   LinkedIn: "/icons/tech/linkedin.svg",
 };
@@ -71,7 +75,7 @@ export function TechnologyIcon({ name }: { name: string }) {
   if (brand) {
     return (
       <img
-        className="technology-icon"
+        className={`technology-icon${name === "Amadeus API" ? " technology-icon--wordmark" : ""}`}
         src={brand}
         alt=""
         width="18"

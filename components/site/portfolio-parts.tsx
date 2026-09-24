@@ -115,6 +115,7 @@ export function ProjectCard({ project }: { project: Project }) {
           src={project.video.src}
           poster={project.video.poster}
           title={project.video.title}
+          playbackRate={project.video.playbackRate}
         />
       ) : project.gallery?.length ? (
         <ProjectCover images={[project.image, ...project.gallery]} />

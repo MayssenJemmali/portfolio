@@ -5,7 +5,7 @@ export type Project = {
   technologies: string[];
   technologyIcons?: Record<string, string>;
   image: { src: string; alt: string; width?: number; height?: number; presentation?: "diagram" };
-  video?: { src: string; poster: string; title: string };
+  video?: { src: string; poster: string; title: string; playbackRate?: number };
   gallery?: { src: string; alt: string; width?: number; height?: number }[];
   detailPath?: string;
   date: string;
@@ -47,6 +47,13 @@ const deepSkynDemo = {
   posterSrc: "/projects/deepskyn-demo-poster.jpg",
   videoSrc: "/deepskyn-demo.mp4",
   watchUrl: "https://youtu.be/Cx03Uz-qliY",
+};
+
+const gazelleProDemo = {
+  title: "GazellePro Tunisair application demo",
+  posterSrc: "/projects/gazellepro-poster.svg",
+  videoSrc: "/gazellepro-demo.mp4",
+  watchUrl: "https://youtu.be/1i9RVXQIwSo",
 };
 
 export const projects: Project[] = [
@@ -124,16 +131,32 @@ export const projects: Project[] = [
     highlights: [],
   },
   {
-    id: "semantic-search",
-    title: "Semantic Archive Search",
+    id: "gazellepro",
+    title: "GazellePro",
     description:
-      "A placeholder search experience for navigating structured documents with semantic retrieval and focused filtering.",
-    technologies: ["TypeScript", "Embeddings", "Vector Search", "REST API"],
-    image: {
-      src: "/projects/knowledge-search.webp",
-      alt: "Abstract editorial illustration of a structured archive being searched",
+      "A Tunisair B2B portal for travel agencies, with Amadeus flight data and partner workflows.",
+    technologies: ["Symfony", "PHP", "MySQL", "Amadeus API"],
+    technologyIcons: {
+      Symfony: "Symfony",
+      PHP: "PHP",
+      MySQL: "MySQL",
+      "Amadeus API": "Amadeus API",
     },
-    date: "20XX",
+    image: {
+      src: gazelleProDemo.posterSrc,
+      alt: "GazellePro Tunisair demo preview",
+    },
+    date: "2024",
+    sourceAvailability: "closed",
+    video: {
+      src: gazelleProDemo.videoSrc,
+      poster: gazelleProDemo.posterSrc,
+      title: gazelleProDemo.title,
+      playbackRate: 1.5,
+    },
+    liveUrl: gazelleProDemo.watchUrl,
+    liveLabel: "Video demo",
+    detailPath: "/projects/gazellepro",
     highlights: [],
   },
 ];
@@ -171,6 +194,11 @@ export const smartPfeDetail = {
     { src: "/projects/smartpfe-7.png", alt: "Jury simulation preparation screen", caption: "Presentation and pitch work lead into a defense rehearsal.", width: 1857, height: 928 },
     { src: "/projects/smartpfe-8.png", alt: "Live defense rehearsal with slides and speech script", caption: "The rehearsal pairs live slides with a speech reference.", width: 1846, height: 925 },
     { src: "/projects/smartpfe-10.png", alt: "Jury follow-up question session", caption: "A jury Q&A session helps students practice follow-up answers.", width: 1862, height: 927 },
+  ],
+  repositories: [
+    { title: "SmartPfe-Front", url: "https://github.com/SmartPfe/SmartPfe-Front", detail: "React and TypeScript client for the SmartPFE platform." },
+    { title: "SmartPfe-Backend", url: "https://github.com/SmartPfe/SmartPfe-Backend", detail: "Express and MongoDB API with Gemini-powered assistance." },
+    { title: "RAG ingestion pipeline", url: "https://github.com/SmartPfe/rag-ingestion", detail: "Python pipeline for report parsing, multilingual embeddings, and MongoDB storage." },
   ],
 };
 
@@ -238,6 +266,25 @@ export const annonceTnDetail = {
     { title: "Spring Boot backend", url: "https://github.com/MayssenJemmali/annonceTn-backend", detail: "REST API, JWT authentication, and marketplace services." },
     { title: "Recommendation engine", url: "https://github.com/MayssenJemmali/annonceTn-recommender", detail: "Python notebook for interaction-based recommendations." },
   ],
+};
+
+export const gazelleProDetail = {
+  lead: "A B2B portal built during my Tunisair internship to support travel-agency partners.",
+  intro: "GazellePro centralizes key workflows for Tunisair’s travel agency partners, combining flight data with account and service management.",
+  journey: [
+    { title: "Contracts and claims", detail: "Manage agency contracts and submit or follow claims through the portal." },
+    { title: "Financial and credit workflows", detail: "Review financial reports and credit workflows in one partner workspace." },
+    { title: "Flight search and booking", detail: "Use Amadeus flight data to support flight search and booking workflows." },
+  ],
+  architecture: [
+    { title: "Web application", detail: "The portal was built with Symfony and PHP." },
+    { title: "Data layer", detail: "MySQL supports the portal’s business data." },
+    { title: "Access and accountability", detail: "JWT authentication, role-based access control, and audit logging secure and record user activity." },
+    { title: "Amadeus API integration", detail: "The Amadeus API supports the portal’s search and booking flow." },
+  ],
+  demo: {
+    ...gazelleProDemo,
+  },
 };
 
 export const experiences: Experience[] = [
