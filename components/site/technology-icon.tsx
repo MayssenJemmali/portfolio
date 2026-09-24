@@ -12,7 +12,14 @@ import {
   Workflow,
 } from "lucide-react";
 const brandIcons: Record<string, string> = {
-  Python: "/icons/tech/python.svg",
+  React: "/icons/tech/react.svg",
+  NestJS: "/icons/tech/nestjs-original.svg",
+  Kubernetes: "/icons/tech/kubernetes-original.svg",
+  Jenkins: "/icons/tech/jenkins-original.svg",
+  Express: "/icons/tech/express.svg",
+  MongoDB: "/icons/tech/mongodb.svg",
+  "Gemini API": "/icons/tech/googlegemini.svg",
+  Python: "/icons/tech/python-devicon.svg",
   FastAPI: "/icons/tech/fastapi.svg",
   PostgreSQL: "/icons/tech/postgresql.svg",
   Docker: "/icons/tech/docker.svg",
@@ -21,7 +28,7 @@ const brandIcons: Record<string, string> = {
   Kafka: "/icons/tech/apachekafka.svg",
   "CI/CD": "/icons/tech/githubactions.svg",
   Linux: "/icons/tech/linux.svg",
-  TypeScript: "/icons/tech/typescript.svg",
+  TypeScript: "/icons/tech/typescript-devicon.svg",
   "Node.js": "/icons/tech/nodedotjs.svg",
   GitHub: "/icons/tech/github.svg",
   LinkedIn: "/icons/tech/linkedin.svg",
@@ -56,6 +63,7 @@ function conceptFor(name: string) {
 }
 
 export function TechnologyIcon({ name }: { name: string }) {
+  if (name === "RAG") return null;
   const brand = brandIcons[name];
 
   if (brand) {
