@@ -231,14 +231,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.25rem, 2.5vw, 2rem);
-  align-items: start;
+  align-items: stretch;
 }
-.project-grid > .reveal { height: auto; }
+.project-grid > .reveal { height: 100%; }
 .project-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  height: auto;
+  height: 100%;
   overflow: hidden;
   border: 2px solid var(--ink);
   border-radius: 0.25rem;
@@ -251,7 +251,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
   transform: translate(-3px, -3px);
   box-shadow: 8px 8px 0 var(--ink);
 }
-.project-card-main { display: block; color: inherit; }
+.project-card-main { display: flex; flex: 1; flex-direction: column; color: inherit; }
 .project-card-overlay { position: absolute; inset: 0; z-index: 1; cursor: pointer; }
 .project-card-overlay:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 .project-image-wrap {
@@ -269,8 +269,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
   object-fit: cover;
   transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.project-image-wrap--diagram { aspect-ratio: 1280 / 853; background: #fff; }
-.project-image-wrap--diagram img { aspect-ratio: 1280 / 853; object-fit: contain; }
+.project-image-wrap--diagram { background: #fff; }
+.project-image-wrap--diagram img { object-fit: contain; }
 .project-card:hover .project-image-wrap img {
   transform: scale(1.03);
 }
@@ -394,13 +394,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
 .case-process h3 { margin: 0 0 0.2rem; font-size: 1.05rem; line-height: 1.35; }
 .case-process p { margin: 0; color: #514d46; font-size: 1rem; line-height: 1.6; }
 .case-section > .case-evaluation { margin-top: 1.25rem; border-left: 3px solid var(--accent); padding: 0.1rem 0 0.1rem 1rem; font-size: 0.98rem; line-height: 1.65; }
-.case-video { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; margin-top: 1.4rem; overflow: hidden; border: 2px solid var(--ink); background: var(--ink); box-shadow: var(--hard-shadow); }
-.case-video img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 300ms ease; }
-.case-video:hover img { transform: scale(1.025); }
-.case-video-play { position: absolute; left: 50%; top: 50%; display: inline-flex; align-items: center; gap: 0.6rem; transform: translate(-50%, -50%); border: 2px solid var(--ink); background: var(--paper); padding: 0.65rem 0.9rem; box-shadow: 4px 4px 0 var(--ink); font: 850 0.85rem var(--font-mono); white-space: nowrap; }
-.case-video-play svg { width: 1rem; height: 1rem; fill: var(--accent); }
 .case-video-link { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1rem; font: 850 0.85rem var(--font-mono); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.2rem; }
 .case-video-link svg { width: 1rem; height: 1rem; }
+.case-video-player { display: block; width: 100%; aspect-ratio: 16 / 9; margin-top: 1.4rem; overflow: hidden; border: 2px solid var(--ink); background: var(--ink); box-shadow: var(--hard-shadow); }
+.case-video-player .video-js { width: 100%; height: 100%; }
+.case-video-player .vjs-control-bar { background: rgba(20, 20, 18, 0.92); }
+.case-video-player .vjs-play-progress, .case-video-player .vjs-volume-level { background-color: var(--accent); }
 .project-gallery { margin-top: 1.4rem; }
 .project-gallery-slide { margin: 0; }
 .project-gallery-image { overflow: hidden; border: 2px solid var(--ink); background: #fff; aspect-ratio: 1.95; box-shadow: var(--hard-shadow); }

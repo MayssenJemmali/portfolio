@@ -179,10 +179,10 @@ export function ProjectCard({ project }: { project: Project }) {
             href={project.liveUrl}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${project.title} live demo, opens in a new tab`}
+            aria-label={`${project.title} ${project.liveLabel ?? "live demo"}, opens in a new tab`}
           >
             <ExternalLink aria-hidden="true" />
-            <span>Live demo</span>
+            <span>{project.liveLabel ?? "Live demo"}</span>
           </a>
         ) : (
           <span aria-disabled="true" title="No demo URL provided yet">

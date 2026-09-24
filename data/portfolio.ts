@@ -11,6 +11,7 @@ export type Project = {
   githubUrl?: string;
   sourceAvailability?: "closed";
   liveUrl?: string;
+  liveLabel?: string;
   highlights: string[];
 };
 
@@ -82,6 +83,8 @@ export const projects: Project[] = [
     },
     date: "2026",
     sourceAvailability: "closed",
+    liveUrl: "https://youtu.be/Cx03Uz-qliY",
+    liveLabel: "Video demo",
     detailPath: "/projects/deepskyn",
     highlights: [],
   },
@@ -178,6 +181,7 @@ export const deepSkynDetail = {
   demo: {
     title: "DeepSkyn application walkthrough",
     posterSrc: "/projects/deepskyn-demo-poster.jpg",
+    videoSrc: "/deepskyn-demo.mp4",
     watchUrl: "https://youtu.be/Cx03Uz-qliY",
   },
 };

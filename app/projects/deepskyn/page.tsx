@@ -12,6 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ArchitectureViewer } from "@/components/site/architecture-viewer";
+import { VideoJsPlayer } from "@/components/site/videojs-player";
 import { TechnologyTag } from "@/components/site/portfolio-parts";
 import { deepSkynDetail, projects } from "@/data/portfolio";
 
@@ -109,23 +110,11 @@ export default function DeepSkynPage() {
             <section className="case-section" id="demo" aria-labelledby="deepskyn-demo">
               <h2 id="deepskyn-demo">See the app in action</h2>
               <p>Watch the product walkthrough to see how DeepSkyn feels in use.</p>
-              <a
-                className="case-video"
-                href={deepSkynDetail.demo.watchUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${deepSkynDetail.demo.title}, opens on YouTube in a new tab`}
-              >
-                <img
-                  src={deepSkynDetail.demo.posterSrc}
-                  alt="DeepSkyn demo preview showing the daily skincare routine completion screen"
-                  width={1280}
-                  height={720}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <span className="case-video-play"><Play aria-hidden="true" /> Play walkthrough</span>
-              </a>
+              <VideoJsPlayer
+                src={deepSkynDetail.demo.videoSrc}
+                poster={deepSkynDetail.demo.posterSrc}
+                title={deepSkynDetail.demo.title}
+              />
               <a className="case-video-link" href={deepSkynDetail.demo.watchUrl} target="_blank" rel="noreferrer">
                 Watch on YouTube <ArrowUpRight aria-hidden="true" />
               </a>
