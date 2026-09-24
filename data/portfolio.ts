@@ -5,6 +5,7 @@ export type Project = {
   technologies: string[];
   technologyIcons?: Record<string, string>;
   image: { src: string; alt: string; width?: number; height?: number; presentation?: "diagram" };
+  video?: { src: string; poster: string; title: string };
   gallery?: { src: string; alt: string; width?: number; height?: number }[];
   detailPath?: string;
   date: string;
@@ -39,6 +40,13 @@ export const profile = {
   githubUrl: "https://github.com/MayssenJemmali",
   linkedinUrl: "https://www.linkedin.com/in/mayssen-jemmali-a1509b283/",
   resumeUrl: "/resume-en.pdf",
+};
+
+const deepSkynDemo = {
+  title: "DeepSkyn application walkthrough",
+  posterSrc: "/projects/deepskyn-demo-poster.jpg",
+  videoSrc: "/deepskyn-demo.mp4",
+  watchUrl: "https://youtu.be/Cx03Uz-qliY",
 };
 
 export const projects: Project[] = [
@@ -83,22 +91,36 @@ export const projects: Project[] = [
     },
     date: "2026",
     sourceAvailability: "closed",
-    liveUrl: "https://youtu.be/Cx03Uz-qliY",
+    video: {
+      src: deepSkynDemo.videoSrc,
+      poster: deepSkynDemo.posterSrc,
+      title: deepSkynDemo.title,
+    },
+    liveUrl: deepSkynDemo.watchUrl,
     liveLabel: "Video demo",
     detailPath: "/projects/deepskyn",
     highlights: [],
   },
   {
-    id: "delivery-pipeline",
-    title: "Delivery Automation Pipeline",
+    id: "annoncetn",
+    title: "AnnonceTN",
     description:
-      "A placeholder infrastructure project for repeatable builds, container delivery, and environment-aware deployment.",
-    technologies: ["Docker", "CI/CD", "Linux", "Cloud"],
+      "A three-tier marketplace built during my QantumShift internship, with personalized item recommendations informed by user activity.",
+    technologies: ["Angular", "Spring Boot", "MongoDB", "Python", "Machine Learning"],
     image: {
-      src: "/projects/devops-pipeline.webp",
-      alt: "Abstract editorial diagram of containers moving through a deployment pipeline",
+      src: "/projects/annoncetn-landing.png",
+      alt: "AnnonceTN category landing page showing categories for cars, land, furniture, animals, and multimedia",
+      width: 1847,
+      height: 876,
     },
-    date: "20XX",
+    gallery: [
+      { src: "/projects/annoncetn-listings.png", alt: "AnnonceTN listings page with search filters and classified cards", width: 1830, height: 879 },
+      { src: "/projects/annoncetn-detail.png", alt: "AnnonceTN listing detail page with seller information and safety advice", width: 1820, height: 879 },
+      { src: "/projects/annoncetn-post-form.png", alt: "AnnonceTN form for publishing a listing with price, category, city, and image fields", width: 1795, height: 880 },
+    ],
+    date: "2025",
+    githubUrl: "https://github.com/MayssenJemmali/annonceTn-fullstack",
+    detailPath: "/projects/annoncetn",
     highlights: [],
   },
   {
@@ -179,11 +201,43 @@ export const deepSkynDetail = {
     height: 853,
   },
   demo: {
-    title: "DeepSkyn application walkthrough",
-    posterSrc: "/projects/deepskyn-demo-poster.jpg",
-    videoSrc: "/deepskyn-demo.mp4",
-    watchUrl: "https://youtu.be/Cx03Uz-qliY",
+    ...deepSkynDemo,
   },
+};
+
+export const annonceTnDetail = {
+  lead: "A three-tier marketplace with personalized item discovery, built during my QantumShift internship.",
+  intro: "I developed AnnonceTN during a two-month internship at QantumShift in July and August 2025. The platform brings together an Angular marketplace, a Spring Boot REST API backed by MongoDB, and a Python recommendation engine.",
+  journey: [
+    "Browse classified listings by category, search and filter results, and open detailed listing pages.",
+    "Publish listings, manage favorites, and record user interactions through authenticated API routes.",
+    "Use browsing and favorite activity to make recommendations more relevant to each user.",
+  ],
+  architecture: [
+    { title: "Angular marketplace", detail: "The Angular 20 and TypeScript frontend provides category discovery, listing search and filters, detail pages, favorites, and a form for publishing listings." },
+    { title: "Spring Boot API", detail: "Spring Boot REST endpoints handle listings, accounts, categories, favorites, and view tracking. JWT authentication protects user-specific operations." },
+    { title: "MongoDB data layer", detail: "The backend stores marketplace and interaction data in MongoDB, which the recommendation service reads for model input." },
+    { title: "Python recommender", detail: "A Python service uses scikit-learn, NMF, and cosine similarity to produce personalized suggestions from user activity." },
+  ],
+  recommendationIntro: "The recommender treats user activity as implicit feedback: favorited listings receive a stronger signal than viewed listings. NMF finds preference patterns across the user-item matrix, while cosine similarity helps surface related users or items. A cold-start fallback handles users without enough interaction history.",
+  recommendationSteps: [
+    { title: "Collect interactions", detail: "The system uses listing views and favorites as recommendation signals." },
+    { title: "Weight feedback", detail: "Favorites are assigned a weight of 5 and views a weight of 2; repeated interactions retain the stronger signal." },
+    { title: "Find relevant items", detail: "NMF extracts latent preference patterns, and cosine similarity supports personalized and similar-item recommendations." },
+    { title: "Handle new users", detail: "A cold-start fallback provides a path for users whose interaction history is not yet sufficient." },
+  ],
+  gallery: [
+    { src: "/projects/annoncetn-landing.png", alt: "AnnonceTN category landing page", caption: "The landing page opens with the marketplace's main categories.", width: 1847, height: 876 },
+    { src: "/projects/annoncetn-listings.png", alt: "AnnonceTN listing browser with search filters", caption: "Search and filters narrow the listing cards by user needs.", width: 1830, height: 879 },
+    { src: "/projects/annoncetn-detail.png", alt: "AnnonceTN listing detail and seller information", caption: "A listing detail page brings item information and seller details together.", width: 1820, height: 879 },
+    { src: "/projects/annoncetn-post-form.png", alt: "AnnonceTN listing publication form", caption: "Sellers can enter item details, price, location, and a primary image.", width: 1795, height: 880 },
+  ],
+  repositories: [
+    { title: "Full-stack project overview", url: "https://github.com/MayssenJemmali/annonceTn-fullstack", detail: "Architecture notes and application screenshots." },
+    { title: "Angular frontend", url: "https://github.com/MayssenJemmali/annonceTn-frontend", detail: "Angular 20 marketplace interface." },
+    { title: "Spring Boot backend", url: "https://github.com/MayssenJemmali/annonceTn-backend", detail: "REST API, JWT authentication, and marketplace services." },
+    { title: "Recommendation engine", url: "https://github.com/MayssenJemmali/annonceTn-recommender", detail: "Python notebook for interaction-based recommendations." },
+  ],
 };
 
 export const experiences: Experience[] = [

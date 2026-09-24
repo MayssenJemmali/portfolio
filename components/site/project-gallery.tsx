@@ -18,7 +18,7 @@ type GalleryImage = {
   height: number;
 };
 
-export function ProjectGallery({ images }: { images: GalleryImage[] }) {
+export function ProjectGallery({ images, label = "Project screenshots" }: { images: GalleryImage[]; label?: string }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(1);
   const [canPrev, setCanPrev] = useState(false);
@@ -41,7 +41,7 @@ export function ProjectGallery({ images }: { images: GalleryImage[] }) {
   }, [api]);
 
   return (
-    <Carousel className="project-gallery" opts={{ align: "start", loop: false }} setApi={setApi} aria-label="SmartPFE screenshots">
+    <Carousel className="project-gallery" opts={{ align: "start", loop: false }} setApi={setApi} aria-label={label}>
       <CarouselContent>
         {images.map((image, index) => (
           <CarouselItem key={image.src}>

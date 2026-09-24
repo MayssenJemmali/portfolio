@@ -15,6 +15,7 @@ import type { Experience, Project } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import { TechnologyIcon } from "@/components/site/technology-icon";
 import { ProjectCover } from "@/components/site/project-cover";
+import { ProjectVideoPreview } from "@/components/site/project-video-preview";
 
 export function Tag({ children, className }: { children: ReactNode; className?: string }) {
   return <li className={cn("tag", className)}>{children}</li>;
@@ -109,7 +110,13 @@ export function ProjectCard({ project }: { project: Project }) {
 
   const mainContent = (
     <>
-      {project.gallery?.length ? (
+      {project.video ? (
+        <ProjectVideoPreview
+          src={project.video.src}
+          poster={project.video.poster}
+          title={project.video.title}
+        />
+      ) : project.gallery?.length ? (
         <ProjectCover images={[project.image, ...project.gallery]} />
       ) : (
         <div className={cn("project-image-wrap", project.image.presentation === "diagram" && "project-image-wrap--diagram")}>
