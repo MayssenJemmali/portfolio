@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+"use client";
+
 import { ArrowLeft, ArrowUpRight, LockKeyhole, Play, Trophy } from "lucide-react";
 import Link from "next/link";
 
@@ -16,40 +17,50 @@ import { VideoJsPlayer } from "@/components/site/videojs-player";
 import { TechnologyTag } from "@/components/site/portfolio-parts";
 import { TechnologyIcon } from "@/components/site/technology-icon";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { deepSkynDetail, projects } from "@/data/portfolio";
+import { LanguageSwitcher } from "@/components/site/language-switcher";
+import { getPortfolio } from "@/data/get-portfolio";
+import { localeCopy } from "@/data/locale-copy";
+import { useLocale } from "@/components/site/locale-provider";
 
-export const metadata: Metadata = {
-  title: "DeepSkyn | Mayssen Jemmali",
-  description: deepSkynDetail.lead,
-};
-
-const project = projects.find((entry) => entry.id === "deepskyn")!;
 
 export default function DeepSkynPage() {
+  return <DeepSkynPageContent />;
+}
+
+export function DeepSkynPageContent() {
+  const { locale } = useLocale();
+  const { deepSkynDetail, projects } = getPortfolio(locale);
+  const copy = localeCopy[locale];
+  const pageCopy = copy.caseStudies.deepskyn;
+  const sectionCopy = copy.casePage;
+  const project = projects.find((entry) => entry.id === "deepskyn")!;
   return (
     <>
-      <a className="skip-link" href="#content">Skip to content</a>
+      <a className="skip-link" href="#content">{copy.skipToContent}</a>
       <main className="case-page" id="content">
         <div className="case-shell">
           <div className="case-topbar">
-            <Breadcrumb>
+            <Breadcrumb aria-label={sectionCopy.breadcrumb}>
               <BreadcrumbList>
-                <BreadcrumbItem><BreadcrumbLink asChild><Link href="/">Home</Link></BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbItem><BreadcrumbLink asChild><Link href={"/"}>{sectionCopy.home}</Link></BreadcrumbLink></BreadcrumbItem>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem><BreadcrumbLink asChild><Link href="/#projects">Projects</Link></BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbItem><BreadcrumbLink asChild><Link href={"/#projects"}>{sectionCopy.projects}</Link></BreadcrumbLink></BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem><BreadcrumbPage>DeepSkyn</BreadcrumbPage></BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-            <Button asChild variant="outline" size="sm" className="case-back-button">
-              <Link href="/#projects"><ArrowLeft aria-hidden="true" /> Back to projects</Link>
-            </Button>
+            <div className="case-topbar-actions">
+              <LanguageSwitcher />
+              <Button asChild variant="outline" size="sm" className="case-back-button">
+                <Link href={"/#projects"}><ArrowLeft aria-hidden="true" /> {sectionCopy.backToProjects}</Link>
+              </Button>
+            </div>
           </div>
 
           <article className="case-article">
             <header className="case-intro case-intro--with-award">
               <div className="case-intro-main">
-                <p className="case-eyebrow">Selected project / Case study</p>
+                <p className="case-eyebrow">{sectionCopy.selectedProject} / {sectionCopy.caseStudy}</p>
                 <h1>DeepSkyn</h1>
                 <p className="case-lead">{deepSkynDetail.lead}</p>
 
@@ -58,28 +69,28 @@ export default function DeepSkynPage() {
                     <div className="case-award-card-header">
                       <span className="case-award-badge">
                         <Trophy className="w-3.5 h-3.5" aria-hidden="true" />
-                        1st Prize · ESPRIT Bal des Projets 2026
+                        {pageCopy.awardCategory}
                       </span>
                       <span className="case-award-category">{deepSkynDetail.award.category}</span>
                     </div>
                     <p className="case-award-text">
-                      Won 1st place at ESPRIT&apos;s annual project fair (Bal des Projets), awarded by an academic &amp; industry jury to Team SuperNova.
+                      {pageCopy.awardText}
                     </p>
                     <a
                       href={deepSkynDetail.award.postUrl}
                       target="_blank"
                       rel="noreferrer"
                       className="case-award-link"
-                      aria-label="View 1st Prize award post on LinkedIn, opens in a new tab"
+                      aria-label={`${pageCopy.awardLink} (${locale === "fr" ? "s’ouvre dans un nouvel onglet" : "opens in a new tab"})`}
                     >
                       <TechnologyIcon name="LinkedIn" />
-                      <span>View award post on LinkedIn</span>
+                      <span>{pageCopy.awardLink}</span>
                       <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
                     </a>
                   </div>
                 )}
 
-                <ul className="tag-list" aria-label="DeepSkyn technologies">
+                <ul className="tag-list" aria-label={`DeepSkyn ${sectionCopy.technologies}`}>
                   {project.technologies.map((name) => (
                     <TechnologyTag key={name} name={name} iconName={project.technologyIcons?.[name]} />
                   ))}
@@ -87,18 +98,18 @@ export default function DeepSkynPage() {
 
                 <div className="case-actions">
                   <Button asChild className="neo-button">
-                    <a href="#demo"><Play aria-hidden="true" /> Watch app demo</a>
+                    <a href="#demo"><Play aria-hidden="true" /> {locale === "fr" ? "Voir la démo de l’application" : "Watch app demo"}</a>
                   </Button>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <span tabIndex={0} className="inline-flex cursor-not-allowed focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-primary">
                         <Button variant="outline" className="neo-button pointer-events-none" disabled>
-                          <LockKeyhole aria-hidden="true" /> Closed source
+                          <LockKeyhole aria-hidden="true" /> {copy.portfolio.closedSource}
                         </Button>
                       </span>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" sideOffset={6}>
-                      Source code is closed under contract and cannot be shared publicly.
+                      {copy.portfolio.closedSourceExplanation}
                     </TooltipContent>
                   </Tooltip>
                 </div>
@@ -108,14 +119,14 @@ export default function DeepSkynPage() {
                 <aside className="case-intro-certificate">
                   <figure className="case-certificate-card">
                     <div className="case-certificate-header">
-                      <span>Official Certificate</span>
-                      <span className="case-certificate-hint">Enlarge ↗</span>
+                      <span>{pageCopy.certificate}</span>
+                      <span className="case-certificate-hint">{pageCopy.enlarge}</span>
                     </div>
                     <a
                       href={deepSkynDetail.award.certificate.src}
                       target="_blank"
                       rel="noreferrer"
-                      aria-label="View the full resolution DeepSkyn award certificate in a new tab"
+                      aria-label={pageCopy.certificateLink}
                       className="case-certificate-link"
                     >
                       <img
@@ -128,7 +139,7 @@ export default function DeepSkynPage() {
                       />
                     </a>
                     <figcaption>
-                      1st Prize certificate awarded to Team SuperNova for DeepSkyn at ESPRIT&apos;s 13th Bal des Projets.
+                      {pageCopy.certificateCaption}
                     </figcaption>
                   </figure>
                 </aside>
@@ -136,19 +147,19 @@ export default function DeepSkynPage() {
             </header>
 
             <section className="case-section" aria-labelledby="deepskyn-overview">
-              <h2 id="deepskyn-overview">The idea</h2>
+              <h2 id="deepskyn-overview">{sectionCopy.idea}</h2>
               <p>{deepSkynDetail.intro}</p>
             </section>
 
             <section className="case-section" aria-labelledby="deepskyn-journey">
-              <h2 id="deepskyn-journey">From analysis to routine</h2>
+              <h2 id="deepskyn-journey">{pageCopy.journey}</h2>
               <ul className="case-bullets">
                 {deepSkynDetail.journey.map((step) => <li key={step}>{step}</li>)}
               </ul>
             </section>
 
             <section className="case-section" aria-labelledby="deepskyn-search">
-              <h2 id="deepskyn-search">Searching 19K skincare products</h2>
+              <h2 id="deepskyn-search">{pageCopy.productSearch}</h2>
               <p>{deepSkynDetail.searchIntro}</p>
               <ol className="case-process">
                 {deepSkynDetail.searchSteps.map((step) => (
@@ -161,7 +172,7 @@ export default function DeepSkynPage() {
             </section>
 
             <section className="case-section" aria-labelledby="deepskyn-models">
-              <h2 id="deepskyn-models">The model work</h2>
+              <h2 id="deepskyn-models">{pageCopy.modelWork}</h2>
               <p>{deepSkynDetail.modelIntro}</p>
               <ul className="case-bullets case-bullets-after-copy">
                 {deepSkynDetail.modelWork.map((result) => <li key={result}>{result}</li>)}
@@ -169,31 +180,33 @@ export default function DeepSkynPage() {
             </section>
 
             <section className="case-section" aria-labelledby="deepskyn-architecture">
-              <h2 id="deepskyn-architecture">How it was delivered</h2>
+              <h2 id="deepskyn-architecture">{pageCopy.delivery}</h2>
               <p>{deepSkynDetail.architecture}</p>
               <ArchitectureViewer
                 image={deepSkynDetail.architectureImage}
-                title="DeepSkyn architecture"
-                caption="The application, delivery pipelines, cluster, GitOps, and monitoring in one view."
+                title={locale === "fr" ? "Architecture de DeepSkyn" : "DeepSkyn architecture"}
+                caption={pageCopy.architectureCaption}
+                locale={locale}
               />
             </section>
 
             <section className="case-section" id="demo" aria-labelledby="deepskyn-demo">
-              <h2 id="deepskyn-demo">See the app in action</h2>
-              <p>Watch the product walkthrough to see how DeepSkyn feels in use.</p>
+              <h2 id="deepskyn-demo">{pageCopy.seeApp}</h2>
+              <p>{pageCopy.demoIntro}</p>
               <VideoJsPlayer
                 src={deepSkynDetail.demo.videoSrc}
                 poster={deepSkynDetail.demo.posterSrc}
                 title={deepSkynDetail.demo.title}
+                locale={locale}
               />
-              <a className="case-video-link" href={deepSkynDetail.demo.watchUrl} target="_blank" rel="noreferrer">
-                Watch on YouTube <ArrowUpRight aria-hidden="true" />
+              <a className="case-video-link" href={deepSkynDetail.demo.watchUrl} target="_blank" rel="noreferrer" aria-label={`DeepSkyn · ${sectionCopy.videoNewTab}`}>
+                {sectionCopy.watchOnYouTube} <ArrowUpRight aria-hidden="true" />
               </a>
             </section>
           </article>
 
           <footer className="case-footer">
-            <Link href="/#projects"><ArrowLeft aria-hidden="true" /> Back to all projects</Link>
+            <Link href={"/#projects"}><ArrowLeft aria-hidden="true" /> {sectionCopy.backToAllProjects}</Link>
           </footer>
         </div>
       </main>

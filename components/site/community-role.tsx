@@ -1,6 +1,8 @@
 import type { CommunityRole as CommunityRoleData } from "@/data/portfolio";
+import { localeCopy, type Locale } from "@/data/locale-copy";
 
-export function CommunityRole({ role }: { role: CommunityRoleData }) {
+export function CommunityRole({ role, locale = "en" }: { role: CommunityRoleData; locale?: Locale }) {
+  const copy = localeCopy[locale];
   return (
     <article className="community-role">
       <div className="community-heading">
@@ -9,7 +11,7 @@ export function CommunityRole({ role }: { role: CommunityRoleData }) {
           href={role.url}
           target="_blank"
           rel="noreferrer"
-          aria-label={`Visit ${role.organization} on Instagram, opens in a new tab`}
+          aria-label={copy.portfolio.visitCommunity.replace("{organization}", role.organization)}
         >
           <img
             src={role.logo.src}
@@ -22,23 +24,23 @@ export function CommunityRole({ role }: { role: CommunityRoleData }) {
         </a>
         <div className="community-identity">
           <h3>
-            <a href={role.url} target="_blank" rel="noreferrer" aria-label={`Visit ${role.organization} on Instagram, opens in a new tab`}>
+            <a href={role.url} target="_blank" rel="noreferrer" aria-label={copy.portfolio.visitCommunity.replace("{organization}", role.organization)}>
               {role.organization}
             </a>
           </h3>
           <p className="community-position">{role.role}</p>
-          <p className="community-location">{role.location}</p>
+        <p className="community-location">{role.location}</p>
         </div>
         <p className="community-period">{role.period}</p>
       </div>
-      <ul className="community-highlights" aria-label={`${role.organization} highlights`}>
+      <ul className="community-highlights" aria-label={`${role.organization} ${locale === "fr" ? "points clés" : "highlights"}`}>
         {role.highlights.map((highlight) => (
           <li key={typeof highlight === "string" ? highlight : highlight.linkText}>
             <span className="experience-bullet-marker" aria-hidden="true" />
             <span>
               {typeof highlight === "string" ? highlight : <>
                 {highlight.before}
-                <a className="community-highlight-link" href={highlight.url} target="_blank" rel="noreferrer" aria-label={`${highlight.linkText}, view LinkedIn post, opens in a new tab`}>
+                <a className="community-highlight-link" href={highlight.url} target="_blank" rel="noreferrer" aria-label={`${highlight.linkText}, ${copy.portfolio.viewLinkedInPost}`}>
                   {highlight.linkText}
                 </a>
                 {highlight.after}

@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { Locale } from "@/data/locale-copy";
 
 type ProjectVideoPreviewProps = {
   src: string;
   poster: string;
   title: string;
   playbackRate?: number;
+  locale?: Locale;
 };
 
-export function ProjectVideoPreview({ src, poster, title, playbackRate = 1 }: ProjectVideoPreviewProps) {
+export function ProjectVideoPreview({ src, poster, title, playbackRate = 1, locale = "en" }: ProjectVideoPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
 
@@ -57,7 +59,7 @@ export function ProjectVideoPreview({ src, poster, title, playbackRate = 1 }: Pr
         loop
         playsInline
         preload="none"
-        aria-label={`${title} preview`}
+        aria-label={`${title} ${locale === "fr" ? "aperçu" : "preview"}`}
       />
     </div>
   );

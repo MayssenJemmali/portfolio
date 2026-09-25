@@ -59,7 +59,7 @@ const conceptIcons = {
 
 function conceptFor(name: string) {
   const value = name.toLowerCase();
-  if (value === "ai" || value.includes("machine learning") || value.includes("recommend")) return conceptIcons.AI;
+  if (value === "ai" || value.includes("machine learning") || value.includes("apprentissage automatique") || value.includes("recommend")) return conceptIcons.AI;
   if (value.includes("rag") || value.includes("embedding") || value.includes("evaluation")) return conceptIcons.AI;
   if (value.includes("search")) return conceptIcons.search;
   if (value.includes("database") || value.includes("data model")) return conceptIcons.data;

@@ -17,6 +17,7 @@ import { TechnologyIcon } from "@/components/site/technology-icon";
 import { ProjectCover } from "@/components/site/project-cover";
 import { ProjectVideoPreview } from "@/components/site/project-video-preview";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { localeCopy, type Locale } from "@/data/locale-copy";
 
 export function Tag({ children, className }: { children: ReactNode; className?: string }) {
   return <li className={cn("tag", className)}>{children}</li>;
@@ -49,13 +50,16 @@ export function ProfileActions({
   githubUrl,
   linkedinUrl,
   resumeUrl,
+  locale = "en",
 }: {
   githubUrl: string;
   linkedinUrl: string;
   resumeUrl: string;
+  locale?: Locale;
 }) {
+  const copy = localeCopy[locale];
   return (
-    <div className="profile-actions" aria-label="Profile links">
+    <div className="profile-actions" aria-label={copy.portfolio.profileLinks}>
       <Button
         asChild
         size="lg"
@@ -66,7 +70,7 @@ export function ProfileActions({
           href={githubUrl}
           target="_blank"
           rel="noreferrer"
-          aria-label="GitHub profile, opens in a new tab"
+          aria-label={copy.portfolio.githubProfileNewTab}
           title="GitHub"
         >
           <TechnologyIcon name="GitHub" />
@@ -82,7 +86,7 @@ export function ProfileActions({
           href={linkedinUrl}
           target="_blank"
           rel="noreferrer"
-          aria-label="LinkedIn profile, opens in a new tab"
+          aria-label={copy.portfolio.linkedinProfileNewTab}
           title="LinkedIn"
         >
           <TechnologyIcon name="LinkedIn" />
@@ -95,7 +99,7 @@ export function ProfileActions({
         className="neo-button resume-action-button"
       >
         <a href={resumeUrl} target="_blank" rel="noreferrer">
-          <span>Resume</span>
+          <span>{copy.home.resume}</span>
           <ArrowUpRight className="w-4 h-4 ml-1" aria-hidden="true" />
         </a>
       </Button>
@@ -103,7 +107,8 @@ export function ProfileActions({
   );
 }
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, locale = "en" }: { project: Project; locale?: Locale }) {
+  const copy = localeCopy[locale];
   const hasValidHighlight =
     project.highlights &&
     project.highlights.length > 0 &&
@@ -117,6 +122,7 @@ export function ProjectCard({ project }: { project: Project }) {
           poster={project.video.poster}
           title={project.video.title}
           playbackRate={project.video.playbackRate}
+          locale={locale}
         />
       ) : project.gallery?.length ? (
         <ProjectCover images={[project.image, ...project.gallery]} />
@@ -143,8 +149,8 @@ export function ProjectCard({ project }: { project: Project }) {
                   target="_blank"
                   rel="noreferrer"
                   className="project-award-badge"
-                  title="View 1st Prize award post on LinkedIn, opens in a new tab"
-                  aria-label={`${project.award.label} on LinkedIn`}
+                  title={copy.portfolio.awardNewTab}
+                  aria-label={`${project.award.label} ${copy.portfolio.awardOnLinkedIn}`}
                 >
                   <Trophy className="project-award-icon" aria-hidden="true" />
                   <span>{project.award.label}</span>
@@ -158,7 +164,7 @@ export function ProjectCard({ project }: { project: Project }) {
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0">
-          <ul className="tag-list" aria-label={`${project.title} technologies`}>
+          <ul className="tag-list" aria-label={`${project.title} ${copy.portfolio.technologies}`}>
             {project.technologies.map((technology) => (
               <TechnologyTag key={technology} name={technology} iconName={project.technologyIcons?.[technology]} />
             ))}
@@ -175,7 +181,7 @@ export function ProjectCard({ project }: { project: Project }) {
     <Card className="project-card">
       <div className="project-card-main">{mainContent}</div>
       {project.detailPath && (
-        <Link className="project-card-overlay" href={project.detailPath} aria-label={`Read ${project.title} project details`} />
+        <Link className="project-card-overlay" href={project.detailPath} aria-label={`${copy.portfolio.readProject}: ${project.title}`} />
       )}
       <CardFooter className="project-links">
         {project.githubUrl ? (
@@ -183,7 +189,7 @@ export function ProjectCard({ project }: { project: Project }) {
             href={project.githubUrl}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${project.title} GitHub source, opens in a new tab`}
+            aria-label={`${project.title} ${copy.portfolio.githubSourceNewTab}`}
           >
             <TechnologyIcon name="GitHub" />
             <span>GitHub</span>
@@ -193,15 +199,15 @@ export function ProjectCard({ project }: { project: Project }) {
             <TooltipTrigger asChild>
               <span aria-disabled="true" tabIndex={0} className="focus-visible:outline-3 focus-visible:outline-offset-[-3px] focus-visible:outline-primary">
                 <LockKeyhole aria-hidden="true" />
-                <span>Closed source</span>
+                <span>{copy.portfolio.closedSource}</span>
               </span>
             </TooltipTrigger>
             <TooltipContent side="bottom" sideOffset={6}>
-              Source code is closed under contract and cannot be shared publicly.
+              {copy.portfolio.closedSourceExplanation}
             </TooltipContent>
           </Tooltip>
         ) : (
-          <span aria-disabled="true" title="No repository URL provided yet">
+          <span aria-disabled="true" title={copy.portfolio.noRepository}>
             <TechnologyIcon name="GitHub" />
             <span>GitHub</span>
           </span>
@@ -211,15 +217,15 @@ export function ProjectCard({ project }: { project: Project }) {
             href={project.liveUrl}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${project.title} ${project.liveLabel ?? "live demo"}, opens in a new tab`}
+            aria-label={`${project.title} ${project.liveLabel ?? copy.portfolio.liveDemo}, ${copy.portfolio.opensNewTab}`}
           >
             <ExternalLink aria-hidden="true" />
-            <span>{project.liveLabel ?? "Live demo"}</span>
+            <span>{project.liveLabel ?? copy.portfolio.liveDemo}</span>
           </a>
         ) : (
-          <span aria-disabled="true" title="No demo URL provided yet">
+          <span aria-disabled="true" title={copy.portfolio.noDemo}>
             <ExternalLink aria-hidden="true" />
-            <span>Live demo</span>
+            <span>{copy.portfolio.liveDemo}</span>
           </span>
         )}
       </CardFooter>
@@ -227,7 +233,8 @@ export function ProjectCard({ project }: { project: Project }) {
   );
 }
 
-export function ExperienceItem({ experience }: { experience: Experience }) {
+export function ExperienceItem({ experience, locale = "en" }: { experience: Experience; locale?: Locale }) {
+  const copy = localeCopy[locale];
   return (
     <article className="experience-card">
       <div className="experience-card-header">
@@ -237,7 +244,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
             href={experience.organizationUrl}
             target="_blank"
             rel="noreferrer"
-            aria-label={`Visit ${experience.organization}, opens in a new tab`}
+            aria-label={copy.portfolio.visitOrganization.replace("{organization}", experience.organization)}
           >
             <img
               src={experience.logo.src}
@@ -251,7 +258,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
           <div className="experience-title-group">
             <h3 className="experience-role">{experience.role}</h3>
             <div className="experience-meta-row">
-              <a className="experience-org" href={experience.organizationUrl} target="_blank" rel="noreferrer" aria-label={`Visit ${experience.organization}, opens in a new tab`}>
+              <a className="experience-org" href={experience.organizationUrl} target="_blank" rel="noreferrer" aria-label={copy.portfolio.visitOrganization.replace("{organization}", experience.organization)}>
                 {experience.organization}
               </a>
               <span className="experience-meta-sep" aria-hidden="true">
@@ -271,7 +278,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
       </div>
 
       <div className="experience-card-body">
-        <ul className="experience-bullets" aria-label={`${experience.role} key deliverables at ${experience.organization}`}>
+        <ul className="experience-bullets" aria-label={`${experience.role} ${copy.portfolio.keyDeliverables} ${experience.organization}`}>
           {experience.highlights.map((highlight) => (
             <li key={highlight} className="experience-bullet">
               <span className="experience-bullet-marker" aria-hidden="true" />
@@ -296,7 +303,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
             href={experience.project.href}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${experience.project.label}, opens in a new tab`}
+            aria-label={`${experience.project.label}, ${locale === "fr" ? "s’ouvre dans un nouvel onglet" : "opens in a new tab"}`}
           >
             <span>{experience.project.label}</span>
             <ArrowUpRight className="experience-btn-icon" aria-hidden="true" />
@@ -305,7 +312,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
           <Link
             className="experience-project-btn"
             href={experience.project.href}
-            aria-label={`${experience.project.label} case study`}
+            aria-label={`${experience.project.label} · ${copy.casePage.caseStudy}`}
           >
             <span>{experience.project.label}</span>
             <ArrowUpRight className="experience-btn-icon" aria-hidden="true" />

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Check, Palette, RotateCcw, X } from "lucide-react";
+import { localeCopy, type Locale } from "@/data/locale-copy";
 
 const PRESET_COLORS = [
   { name: "Original Orange", color: "#ff5a1f" },
@@ -48,27 +49,33 @@ function PickerContent({
   applyColor,
   onClose,
   showClose,
+  locale = "en",
 }: {
   currentColor: string;
   applyColor: (c: string) => void;
   onClose?: () => void;
   showClose?: boolean;
+  locale?: Locale;
 }) {
+  const copy = localeCopy[locale].theme;
+  const presetNames = locale === "fr"
+    ? ["Orange d’origine", "Bleu électrique", "Vert émeraude", "Rouge cramoisi", "Violet néon", "Ambre solaire", "Turquoise menthe", "Encre monochrome"]
+    : PRESET_COLORS.map(({ name }) => name);
   return (
     <>
       <div className="flex items-center justify-between pb-3 mb-3 border-b-2 border-[var(--ink)]">
         <div>
           <p className="font-mono text-xs font-extrabold uppercase tracking-wider text-[var(--ink)]">
-            Accent Theme
+            {copy.accentTheme}
           </p>
-          <p className="text-[11px] text-muted-foreground">Test colors live</p>
+          <p className="text-[11px] text-muted-foreground">{copy.testColors}</p>
         </div>
         {showClose && onClose && (
           <button
             type="button"
             onClick={onClose}
             className="p-1 rounded hover:bg-[var(--surface)] text-[var(--ink)] cursor-pointer"
-            aria-label="Close color picker"
+            aria-label={copy.close}
           >
             <X className="w-4 h-4" />
           </button>
@@ -77,16 +84,16 @@ function PickerContent({
 
       <div className="space-y-3">
         <div>
-          <p className="text-[11px] font-mono font-bold text-muted-foreground mb-2 uppercase">Presets</p>
+          <p className="text-[11px] font-mono font-bold text-muted-foreground mb-2 uppercase">{copy.presets}</p>
           <div className="grid grid-cols-4 gap-2">
-            {PRESET_COLORS.map((preset) => {
+            {PRESET_COLORS.map((preset, index) => {
               const isSelected = currentColor.toLowerCase() === preset.color.toLowerCase();
               return (
                 <button
                   key={preset.color}
                   type="button"
                   onClick={() => applyColor(preset.color)}
-                  title={preset.name}
+                  title={presetNames[index]}
                   className="flex flex-col items-center gap-1 p-1.5 rounded border border-[var(--ink)] bg-white hover:bg-[var(--surface)] transition-all cursor-pointer shadow-[1.5px_1.5px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5"
                 >
                   <span
@@ -98,7 +105,7 @@ function PickerContent({
                     )}
                   </span>
                   <span className="text-[9px] font-mono truncate max-w-full text-center">
-                    {preset.name.split(" ")[0]}
+                    {presetNames[index].split(" ")[0]}
                   </span>
                 </button>
               );
@@ -107,14 +114,14 @@ function PickerContent({
         </div>
 
         <div className="pt-2 border-t border-[var(--ink)]/20">
-          <p className="text-[11px] font-mono font-bold text-muted-foreground mb-1.5 uppercase">Custom</p>
+          <p className="text-[11px] font-mono font-bold text-muted-foreground mb-1.5 uppercase">{copy.custom}</p>
           <div className="flex items-center gap-2">
             <input
               type="color"
               value={currentColor}
               onChange={(e) => applyColor(e.target.value)}
               className="w-8 h-8 rounded border-2 border-[var(--ink)] cursor-pointer bg-transparent p-0"
-              aria-label="Pick custom color"
+              aria-label={copy.chooseCustom}
             />
             <span className="font-mono text-xs font-bold uppercase bg-[var(--surface)] px-2.5 py-1.5 rounded border border-[var(--ink)] flex-1 text-center">
               {currentColor}
@@ -122,11 +129,11 @@ function PickerContent({
             <button
               type="button"
               onClick={() => applyColor("#ff5a1f")}
-              title="Reset to Original Orange"
+              title={copy.resetTo}
               className="p-1.5 rounded border border-[var(--ink)] hover:bg-[var(--surface)] font-mono text-xs flex items-center gap-1 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span className="text-[10px]">Reset</span>
+              <span className="text-[10px]">{copy.reset}</span>
             </button>
           </div>
         </div>
@@ -136,7 +143,7 @@ function PickerContent({
 }
 
 // Desktop floating button + popover version
-export function ThemeColorPicker({ drawerMode }: { drawerMode?: boolean }) {
+export function ThemeColorPicker({ drawerMode, locale = "en" }: { drawerMode?: boolean; locale?: Locale }) {
   const { currentColor, applyColor } = useThemeColor();
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -168,6 +175,7 @@ export function ThemeColorPicker({ drawerMode }: { drawerMode?: boolean }) {
           currentColor={currentColor}
           applyColor={applyColor}
           showClose={false}
+          locale={locale}
         />
       </div>
     );
@@ -180,8 +188,8 @@ export function ThemeColorPicker({ drawerMode }: { drawerMode?: boolean }) {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="theme-picker-button flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-[var(--ink)] bg-[#fffaf0] font-mono text-xs font-bold text-[var(--ink)] shadow-[2px_2px_0_var(--ink)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer"
-        aria-label="Customize theme accent color (testing)"
-        title="Theme Accent Picker (Testing)"
+        aria-label={localeCopy[locale].theme.picker}
+        title={localeCopy[locale].theme.pickerTitle}
       >
         <span
           className="w-3.5 h-3.5 rounded-full border border-[var(--ink)] shrink-0 transition-colors"
@@ -189,20 +197,21 @@ export function ThemeColorPicker({ drawerMode }: { drawerMode?: boolean }) {
           aria-hidden="true"
         />
         <Palette className="w-3.5 h-3.5" aria-hidden="true" />
-        <span>Theme</span>
+        <span>{locale === "fr" ? "Thème" : "Theme"}</span>
       </button>
 
       {isOpen && (
         <div
           className="absolute right-0 top-full mt-2 w-72 rounded-lg border-2 border-[var(--ink)] bg-[#fffaf0] p-4 shadow-[5px_5px_0_var(--ink)] z-50 animate-in fade-in zoom-in-95 duration-150"
           role="dialog"
-          aria-label="Theme Accent Color Picker"
+          aria-label={localeCopy[locale].theme.dialog}
         >
           <PickerContent
             currentColor={currentColor}
             applyColor={applyColor}
             onClose={() => setIsOpen(false)}
             showClose
+            locale={locale}
           />
         </div>
       )}

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+"use client";
+
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
@@ -14,42 +15,52 @@ import {
 import { ProjectGallery } from "@/components/site/project-gallery";
 import { TechnologyTag } from "@/components/site/portfolio-parts";
 import { TechnologyIcon } from "@/components/site/technology-icon";
-import { annonceTnDetail, projects } from "@/data/portfolio";
+import { LanguageSwitcher } from "@/components/site/language-switcher";
+import { getPortfolio } from "@/data/get-portfolio";
+import { localeCopy } from "@/data/locale-copy";
+import { useLocale } from "@/components/site/locale-provider";
 
-export const metadata: Metadata = {
-  title: "AnnonceTN | Mayssen Jemmali",
-  description: annonceTnDetail.lead,
-};
-
-const project = projects.find((entry) => entry.id === "annoncetn")!;
 
 export default function AnnonceTnPage() {
+  return <AnnonceTnPageContent />;
+}
+
+export function AnnonceTnPageContent() {
+  const { locale } = useLocale();
+  const { annonceTnDetail, projects } = getPortfolio(locale);
+  const copy = localeCopy[locale];
+  const pageCopy = copy.caseStudies.annonceTn;
+  const sectionCopy = copy.casePage;
+  const project = projects.find((entry) => entry.id === "annoncetn")!;
   return (
     <>
-      <a className="skip-link" href="#content">Skip to content</a>
+      <a className="skip-link" href="#content">{copy.skipToContent}</a>
       <main className="case-page" id="content">
         <div className="case-shell">
           <div className="case-topbar">
-            <Breadcrumb>
+            <Breadcrumb aria-label={sectionCopy.breadcrumb}>
               <BreadcrumbList>
-                <BreadcrumbItem><BreadcrumbLink asChild><Link href="/">Home</Link></BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbItem><BreadcrumbLink asChild><Link href={"/"}>{sectionCopy.home}</Link></BreadcrumbLink></BreadcrumbItem>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem><BreadcrumbLink asChild><Link href="/#projects">Projects</Link></BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbItem><BreadcrumbLink asChild><Link href={"/#projects"}>{sectionCopy.projects}</Link></BreadcrumbLink></BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem><BreadcrumbPage>AnnonceTN</BreadcrumbPage></BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-            <Button asChild variant="outline" size="sm" className="case-back-button">
-              <Link href="/#projects"><ArrowLeft aria-hidden="true" /> Back to projects</Link>
-            </Button>
+            <div className="case-topbar-actions">
+              <LanguageSwitcher />
+              <Button asChild variant="outline" size="sm" className="case-back-button">
+                <Link href={"/#projects"}><ArrowLeft aria-hidden="true" /> {sectionCopy.backToProjects}</Link>
+              </Button>
+            </div>
           </div>
 
           <article className="case-article">
             <header className="case-intro">
-              <p className="case-eyebrow">Selected project / QantumShift internship · July–August 2025</p>
+              <p className="case-eyebrow">{pageCopy.internship}</p>
               <h1>AnnonceTN</h1>
               <p className="case-lead">{annonceTnDetail.lead}</p>
-              <ul className="tag-list" aria-label="AnnonceTN technologies">
+              <ul className="tag-list" aria-label={`AnnonceTN ${sectionCopy.technologies}`}>
                 {project.technologies.map((name) => (
                   <TechnologyTag key={name} name={name} iconName={project.technologyIcons?.[name]} />
                 ))}
@@ -57,8 +68,8 @@ export default function AnnonceTnPage() {
               <div className="case-actions">
                 {project.githubUrl && (
                   <Button asChild className="neo-button">
-                    <a href={project.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub repositories (opens in a new tab)">
-                      <TechnologyIcon name="GitHub" /> GitHub repositories <ArrowUpRight aria-hidden="true" />
+                    <a href={project.githubUrl} target="_blank" rel="noreferrer" aria-label={`${sectionCopy.githubRepositories} (${locale === "fr" ? "s’ouvre dans un nouvel onglet" : "opens in a new tab"})`}>
+                      <TechnologyIcon name="GitHub" /> {sectionCopy.githubRepositories} <ArrowUpRight aria-hidden="true" />
                     </a>
                   </Button>
                 )}
@@ -66,7 +77,7 @@ export default function AnnonceTnPage() {
             </header>
 
             <section className="case-section" aria-labelledby="annoncetn-overview">
-              <h2 id="annoncetn-overview">The marketplace</h2>
+              <h2 id="annoncetn-overview">{pageCopy.marketplace}</h2>
               <p>{annonceTnDetail.intro}</p>
               <ul className="case-bullets case-bullets-after-copy">
                 {annonceTnDetail.journey.map((step) => <li key={step}>{step}</li>)}
@@ -74,8 +85,8 @@ export default function AnnonceTnPage() {
             </section>
 
             <section className="case-section" aria-labelledby="annoncetn-architecture">
-              <h2 id="annoncetn-architecture">Three tiers and a recommender</h2>
-              <p>The marketplace connects its Angular client, Spring API, and MongoDB data layer to a separate Python recommendation service.</p>
+              <h2 id="annoncetn-architecture">{pageCopy.architecture}</h2>
+              <p>{pageCopy.architectureIntro}</p>
               <ol className="case-process">
                 {annonceTnDetail.architecture.map((step) => (
                   <li key={step.title}>
@@ -87,7 +98,7 @@ export default function AnnonceTnPage() {
             </section>
 
             <section className="case-section" aria-labelledby="annoncetn-recommendations">
-              <h2 id="annoncetn-recommendations">Recommendations from user activity</h2>
+              <h2 id="annoncetn-recommendations">{pageCopy.recommendations}</h2>
               <p>{annonceTnDetail.recommendationIntro}</p>
               <ol className="case-process">
                 {annonceTnDetail.recommendationSteps.map((step) => (
@@ -100,17 +111,17 @@ export default function AnnonceTnPage() {
             </section>
 
             <section className="case-section" aria-labelledby="annoncetn-gallery">
-              <h2 id="annoncetn-gallery">Screens from the marketplace</h2>
-              <p>These screenshots come from the AnnonceTN repositories and show the category landing page, listing browser, item detail, and publishing flow.</p>
-              <ProjectGallery images={annonceTnDetail.gallery} label="AnnonceTN application screenshots" />
+              <h2 id="annoncetn-gallery">{pageCopy.gallery}</h2>
+              <p>{pageCopy.galleryIntro}</p>
+              <ProjectGallery images={annonceTnDetail.gallery} label={`AnnonceTN ${sectionCopy.screenshots}`} locale={locale} />
             </section>
 
             <section className="case-section" id="repositories" aria-labelledby="annoncetn-repositories">
-              <h2 id="annoncetn-repositories">Project repositories</h2>
+              <h2 id="annoncetn-repositories">{sectionCopy.projectRepositories}</h2>
               <ul className="case-repository-grid">
                 {annonceTnDetail.repositories.map((repository) => (
                   <li key={repository.url}>
-                    <a className="case-repository-card" href={repository.url} target="_blank" rel="noreferrer" aria-label={`${repository.title} on GitHub (opens in a new tab)`}>
+                    <a className="case-repository-card" href={repository.url} target="_blank" rel="noreferrer" aria-label={`${repository.title} sur GitHub (${locale === "fr" ? "s’ouvre dans un nouvel onglet" : "opens in a new tab"})`}>
                       <span className="case-repository-copy">
                         <span className="case-repository-title">
                           <TechnologyIcon name="GitHub" />
@@ -127,7 +138,7 @@ export default function AnnonceTnPage() {
           </article>
 
           <footer className="case-footer">
-            <Link href="/#projects"><ArrowLeft aria-hidden="true" /> Back to all projects</Link>
+            <Link href={"/#projects"}><ArrowLeft aria-hidden="true" /> {sectionCopy.backToAllProjects}</Link>
           </footer>
         </div>
       </main>

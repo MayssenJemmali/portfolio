@@ -451,3 +451,259 @@ export const communityRoles: CommunityRole[] = [
     ],
   },
 ];
+
+const frenchAward: ProjectAward = {
+  ...deepSkynAward,
+  label: "1er prix · Bal des Projets '26",
+  badge: "1er prix",
+  category: "Projet JavaScript full stack",
+  summary: "DeepSkyn a remporté le Premier Prix dans la catégorie JavaScript full stack lors du 13e Bal des Projets d’ESPRIT en 2026.",
+  detail: "Réalisé par l’équipe SuperNova, DeepSkyn a remporté le Premier Prix dans la catégorie Projet JavaScript full stack au 13e Bal des Projets d’ESPRIT, le 9 juin 2026.",
+  certificate: {
+    ...deepSkynAward.certificate,
+    alt: "Certificat du Bal des Projets 2026 d’ESPRIT décernant le Premier Prix à l’équipe SuperNova dans la catégorie projet JavaScript full stack",
+  },
+};
+
+/** French reader-facing copy; factual links, dates, images, and technology names remain shared. */
+export const portfolioFr = {
+  profile: {
+    ...profile,
+    role: "Étudiant en génie logiciel",
+    statement: "Je conçois des logiciels fiables et des systèmes intégrant l’IA, du développement d’applications à l’architecture logicielle, jusqu’à la mise en production de fonctionnalités intelligentes.",
+    availability: "À la recherche d’un stage de fin d’études de 6 mois · Disponible dès janvier 2027",
+    portrait: { ...profile.portrait, alt: "Portrait de Jemmali Mohamed Mayssen" },
+  },
+  projects: projects.map((project) => {
+    const localized: Record<string, Partial<Project>> = {
+      smartpfe: {
+        description: "SmartPFE accompagne les étudiants tout au long de leur projet de fin d’études, de la définition des besoins à la rédaction du mémoire. Une assistance propulsée par Gemini et un jury simulé les aident à préparer leur soutenance.",
+        image: { ...project.image, alt: "Espace étudiant SmartPFE présentant l’avancement du mémoire et les étapes guidées du projet" },
+        gallery: project.gallery?.map((image, index) => ({
+          ...image,
+          alt: ["Éditeur de problématique assisté par l’IA", "Espace de modélisation UML", "Éditeur de structure du mémoire", "Espace de rédaction du mémoire", "Préparation à la simulation du jury"][index] ?? image.alt,
+        })),
+      },
+      deepskyn: {
+        award: frenchAward,
+        description: "DeepSkyn analyse des photos de peau pour créer des bilans personnalisés et des routines de soin. La plateforme réunit conseils par IA, découverte de produits et suivi des progrès au sein d’un processus de déploiement automatisé.",
+        image: { ...project.image, alt: "Architecture de DeepSkyn : application React et NestJS, PostgreSQL, Kubernetes, CI/CD, GitOps et supervision" },
+        video: project.video ? { ...project.video, title: "Présentation de l’application DeepSkyn" } : undefined,
+        liveLabel: "Démo vidéo",
+      },
+      annoncetn: {
+        description: "Une marketplace à trois niveaux développée pendant mon stage chez QantumShift, avec des recommandations personnalisées basées sur l’activité des utilisateurs.",
+        technologies: project.technologies.map((name) => name === "Machine Learning" ? "Apprentissage automatique" : name),
+        image: { ...project.image, alt: "Page d’accueil par catégories d’AnnonceTN : automobile, immobilier, mobilier, animaux et multimédia" },
+        gallery: project.gallery?.map((image, index) => ({
+          ...image,
+          alt: ["Liste des annonces avec filtres et cartes de résultats", "Détail d’une annonce avec les informations du vendeur et des conseils de sécurité", "Formulaire de publication avec prix, catégorie, ville et photos"][index] ?? image.alt,
+        })),
+      },
+      gazellepro: {
+        description: "Un portail B2B pour les agences de voyages, développé chez Tunisair avec les données de vol Amadeus et les outils nécessaires aux partenaires.",
+        image: { ...project.image, alt: "Aperçu vidéo de GazellePro pour Tunisair" },
+        video: project.video ? { ...project.video, title: "Démo de l’application GazellePro pour Tunisair" } : undefined,
+        liveLabel: "Démo vidéo",
+      },
+    };
+    return { ...project, ...localized[project.id] };
+  }),
+  smartPfeDetail: {
+    ...smartPfeDetail,
+    lead: "Un espace de travail assisté par l’IA qui accompagne les étudiants en ingénierie de leur idée de projet à la rédaction du mémoire et à la préparation de la soutenance.",
+    intro: "Un projet de fin d’études ne se résume pas à un mémoire. Il faut définir un problème, organiser le travail, concevoir un système, le documenter et le présenter à un jury. SmartPFE réunit ces étapes dans un espace guidé où chaque tâche s’appuie sur le travail déjà réalisé.",
+    journey: [
+      "Partir d’un brief, puis préciser la problématique, les parties prenantes, les besoins, le backlog et les diagrammes UML.",
+      "Structurer le mémoire et rédiger les chapitres avec l’aide de l’IA, tout en gardant la maîtrise du texte grâce à l’édition manuelle et aux retouches ciblées.",
+      "Préparer la présentation et le pitch, puis s’entraîner avec un jury simulé qui analyse la soutenance orale et pose des questions complémentaires.",
+    ],
+    architecture: "Le client React échange avec une API Express qui gère les données de projet dans MongoDB et coordonne l’assistance Gemini. Un pipeline Python distinct extrait la structure et le texte de mémoires de référence, crée des représentations vectorielles multilingues et stocke des passages consultables. La couche de recherche peut réévaluer les correspondances faibles avant de fournir du contexte à la génération du rapport.",
+    cragIntro: "Une recherche vectorielle classique peut renvoyer les passages les plus proches même s’ils correspondent peu au sujet de l’étudiant. Pour structurer le mémoire et rédiger ses chapitres, nous avons ajouté une étape de recherche corrective qui tient compte du projet et de la section en cours.",
+    cragSteps: [
+      { title: "Préparer les références", detail: "Un traitement Python extrait le texte et les tables des matières de 31 mémoires de PFE, les découpe en passages par section et stocke 3 092 extraits avec des vecteurs multilingues de 384 dimensions dans MongoDB." },
+      { title: "Rechercher pour ce projet", detail: "Le backend construit une requête à partir du titre, du domaine, des besoins, des technologies utilisées et de la section visée, puis recherche dans les extraits indexés avec MongoDB Atlas Vector Search." },
+      { title: "Évaluer et corriger", detail: "Un évaluateur mesure la pertinence du contexte récupéré. Si le score est inférieur à 0,65, le service reformule la requête et effectue une nouvelle recherche ciblée. Des solutions de repli par structure ou mots-clés maintiennent la génération disponible en cas d’échec de la recherche vectorielle." },
+      { title: "Générer avec le contexte", detail: "Les références retenues sont synthétisées dans la consigne envoyée à l’IA avec les données du projet. Les étudiants peuvent relire, modifier et améliorer le plan ou le chapitre proposé." },
+    ],
+    cragEvaluation: "Sur un test bilingue du générateur de mémoire couvrant 10 sections, l’étape corrective s’est déclenchée dans 5 cas. RAGAS a mesuré une précision contextuelle de 0,800 ; le rappel contextuel (0,200) et la fidélité stricte (0,368) ont révélé des lacunes d’ancrage à corriger. Nous avons étudié les traces Langfuse pour repérer les échecs de recherche ou de génération.",
+    architectureImage: { ...smartPfeDetail.architectureImage, alt: "Architecture animée de SmartPFE : client React, API Express, Gemini, recherche vectorielle MongoDB, recherche corrective et pipeline Python" },
+    gallery: smartPfeDetail.gallery.map((image, index) => ({
+      ...image,
+      alt: ["Vue d’ensemble du projet SmartPFE et parcours guidé", "Éditeur de problématique assisté par l’IA", "Espace de préparation UML", "Éditeur de structure du mémoire", "Rédaction du mémoire universitaire", "Retouche ciblée dans l’éditeur de rapport", "Préparation de la simulation du jury", "Répétition orale avec diapositives et script", "Session de questions complémentaires du jury"][index],
+      caption: ["Le parcours du projet reste visible dans un espace unique.", "La problématique peut être rédigée, améliorée et modifiée.", "La préparation de l’architecture et des diagrammes UML reste liée au projet.", "Les étudiants organisent un plan modifiable avant la rédaction.", "Le mémoire se rédige chapitre par chapitre.", "Des passages sélectionnés peuvent être améliorés sans réécrire tout le chapitre.", "La présentation et le pitch ouvrent la voie à une répétition de soutenance.", "La répétition associe les diapositives au texte de référence.", "Les questions du jury aident à préparer les réponses complémentaires."][index],
+    })),
+    repositories: [
+      { title: "SmartPfe-Front", url: "https://github.com/SmartPfe/SmartPfe-Front", detail: "Client React et TypeScript de la plateforme SmartPFE." },
+      { title: "SmartPfe-Backend", url: "https://github.com/SmartPfe/SmartPfe-Backend", detail: "API Express et MongoDB avec assistance Gemini." },
+      { title: "Pipeline d’ingestion RAG", url: "https://github.com/SmartPfe/rag-ingestion", detail: "Pipeline Python pour analyser les mémoires, créer des vecteurs multilingues et les stocker dans MongoDB." },
+    ],
+  },
+  deepSkynDetail: {
+    ...deepSkynDetail,
+    award: frenchAward,
+    lead: "Une plateforme de soin de la peau qui associe analyse photo, routines personnalisées et découverte de produits grâce à l’IA.",
+    intro: "DeepSkyn réunit au même endroit le profil de peau, les bilans d’analyse et la création d’une routine à suivre. Le projet a été réalisé sous contrat ; son code source et son application restent privés.",
+    journey: [
+      "Importer des photos de peau et consulter un bilan d’analyse conservé dans l’historique des scans.",
+      "Créer une routine à partir du profil et des résultats, suivre ses habitudes et ajuster le programme au fil du temps.",
+      "Découvrir des produits et des ingrédients adaptés dans le catalogue et sur une étagère virtuelle personnelle.",
+    ],
+    searchIntro: "Nous avons importé environ 19 000 produits de soin dans PostgreSQL afin que la routine puisse les rechercher selon le besoin, et pas seulement par nom. Une demande comme « j’ai la peau sèche » peut faire ressortir des produits hydratants même sans connaître une marque ou un ingrédient précis.",
+    searchSteps: [
+      { title: "Préparer le catalogue", detail: "Le traitement d’ingestion rassemble le nom, la catégorie, la description et les ingrédients de chaque produit, puis génère un vecteur avec all-MiniLM-L6-v2." },
+      { title: "Associer les vecteurs aux produits", detail: "Les vecteurs sont stockés avec les produits dans PostgreSQL grâce à pgvector, en reliant le catalogue consultable à la base de l’application." },
+      { title: "Rechercher par sens", detail: "L’API transforme la requête avec le même modèle et classe les produits selon la distance vectorielle. Le générateur de routine affiche les meilleures correspondances avec les recherches classiques par catalogue et ingrédient." },
+    ],
+    modelIntro: "L’analyse associe l’analyse photo par Gemini à des modèles d’apprentissage automatique et de vision évalués séparément. Les comparaisons ont permis de choisir des modèles adaptés à chaque tâche, plutôt que de tout confier à un seul modèle.",
+    modelWork: [
+      "Une comparaison de cinq modèles supervisés sur 10 000 enregistrements a retenu Random Forest : environ 81 % de précision, 0,73 de macro-F1 et 0,91 de macro-AUC.",
+      "Un modèle MobileNetV2 entraîné sur 14 839 images de peau a atteint 90,4 % de précision en validation pour quatre catégories de types de peau.",
+    ],
+    architecture: "Le client React communique avec une API NestJS adossée à PostgreSQL et Prisma. Quatre pipelines Jenkins coordonnent la construction et la livraison des images Docker du backend et du frontend. Les contrôles de qualité SonarQube, les déploiements Kubernetes, la synchronisation Argo CD et la supervision Prometheus/Grafana accompagnent les mises en production.",
+    architectureImage: { ...deepSkynDetail.architectureImage, alt: "Architecture de DeepSkyn : React et NestJS, PostgreSQL, pipelines Jenkins, images Docker, Kubernetes, Argo CD et supervision" },
+    demo: { ...deepSkynDetail.demo, title: "Présentation de l’application DeepSkyn" },
+  },
+  annonceTnDetail: {
+    ...annonceTnDetail,
+    lead: "Une marketplace à trois niveaux avec découverte personnalisée d’annonces, développée lors de mon stage chez QantumShift.",
+    intro: "J’ai développé AnnonceTN pendant un stage de deux mois chez QantumShift, en juillet et août 2025. La plateforme associe une marketplace Angular, une API REST Spring Boot adossée à MongoDB et un moteur de recommandation Python.",
+    journey: [
+      "Parcourir les annonces par catégorie, rechercher et filtrer les résultats, puis consulter chaque fiche détaillée.",
+      "Publier des annonces, gérer ses favoris et enregistrer les interactions via des routes API authentifiées.",
+      "Exploiter les recherches et les favoris pour rendre les recommandations plus pertinentes.",
+    ],
+    architecture: [
+      { title: "Marketplace Angular", detail: "Le frontend Angular 20 et TypeScript gère la découverte par catégorie, la recherche et les filtres, les fiches, les favoris et le formulaire de publication." },
+      { title: "API Spring Boot", detail: "Les routes REST gèrent les annonces, les comptes, les catégories, les favoris et le suivi des consultations. L’authentification JWT protège les opérations liées aux utilisateurs." },
+      { title: "Données MongoDB", detail: "Le backend stocke les annonces et les interactions dans MongoDB ; le service de recommandation les exploite comme données d’entrée." },
+      { title: "Moteur Python", detail: "Un service Python utilise scikit-learn, NMF et la similarité cosinus pour proposer des annonces à partir de l’activité des utilisateurs." },
+    ],
+    recommendationIntro: "Le moteur traite l’activité comme un retour implicite : une annonce ajoutée aux favoris pèse davantage qu’une simple consultation. NMF repère les préférences dans la matrice utilisateurs-annonces ; la similarité cosinus rapproche les profils ou les annonces. Un mécanisme de démarrage à froid prend le relais quand l’historique est insuffisant.",
+    recommendationSteps: [
+      { title: "Collecter les interactions", detail: "Les consultations d’annonces et les favoris servent de signaux pour les recommandations." },
+      { title: "Pondérer les retours", detail: "Les favoris reçoivent un poids de 5 et les consultations un poids de 2 ; les interactions répétées conservent le signal le plus fort." },
+      { title: "Repérer les annonces pertinentes", detail: "NMF extrait les préférences latentes et la similarité cosinus permet des recommandations personnalisées ou des annonces similaires." },
+      { title: "Accompagner les nouveaux utilisateurs", detail: "Le mécanisme de démarrage à froid propose une solution aux utilisateurs dont l’historique est encore insuffisant." },
+    ],
+    gallery: annonceTnDetail.gallery.map((image, index) => ({
+      ...image,
+      alt: ["Page d’accueil des catégories AnnonceTN", "Liste des annonces avec filtres de recherche", "Détail d’une annonce et informations du vendeur", "Formulaire de publication d’une annonce"][index],
+      caption: ["La page d’accueil présente les principales catégories de la marketplace.", "Les filtres affinent les annonces selon les besoins.", "La fiche réunit les informations sur l’article et le vendeur.", "Les vendeurs renseignent l’article, son prix, sa localisation et une photo principale."][index],
+    })),
+    repositories: [
+      { title: "Présentation du projet full stack", url: "https://github.com/MayssenJemmali/annonceTn-fullstack", detail: "Notes d’architecture et captures de l’application." },
+      { title: "Frontend Angular", url: "https://github.com/MayssenJemmali/annonceTn-frontend", detail: "Interface marketplace développée avec Angular 20." },
+      { title: "Backend Spring Boot", url: "https://github.com/MayssenJemmali/annonceTn-backend", detail: "API REST, authentification JWT et services marketplace." },
+      { title: "Moteur de recommandation", url: "https://github.com/MayssenJemmali/annonceTn-recommender", detail: "Notebook Python pour les recommandations basées sur les interactions." },
+    ],
+  },
+  gazelleProDetail: {
+    ...gazelleProDetail,
+    lead: "Un portail B2B développé durant mon stage chez Tunisair pour accompagner les agences de voyages partenaires.",
+    intro: "GazellePro centralise les principaux parcours des agences partenaires de Tunisair, en réunissant les données de vol et la gestion des comptes et des services.",
+    journey: [
+      { title: "Contrats et réclamations", detail: "Gérer les contrats des agences et déposer ou suivre des réclamations depuis le portail." },
+      { title: "Finance et crédit", detail: "Consulter les rapports financiers et les opérations de crédit dans un espace partenaire unique." },
+      { title: "Recherche et réservation de vols", detail: "Exploiter les données de vol Amadeus pour les parcours de recherche et de réservation." },
+    ],
+    architecture: [
+      { title: "Application web", detail: "Le portail a été développé avec Symfony et PHP." },
+      { title: "Données", detail: "SQL Server gère les données métier du portail." },
+      { title: "Accès et traçabilité", detail: "L’authentification JWT, le contrôle d’accès par rôle et les journaux d’audit sécurisent et retracent l’activité des utilisateurs." },
+      { title: "Intégration de l’API Amadeus", detail: "L’API Amadeus alimente la recherche et le parcours de réservation." },
+    ],
+    demo: { ...gazelleProDetail.demo, title: "Démo de l’application GazellePro pour Tunisair" },
+  },
+  experiences: experiences.map((experience, index) => {
+    const localized = [
+      {
+        role: "Stagiaire en génie logiciel et IA",
+        period: "Juin – août 2026",
+        location: "Tunis, Tunisie",
+        highlights: [
+          "Développé SmartPFE avec React, Express et MongoDB pour accompagner les étudiants des besoins et diagrammes UML jusqu’à la rédaction du mémoire et la préparation de la soutenance.",
+          "Conçu un pipeline RAG correctif sur 3 092 sections issues de 31 mémoires, avec recherche hybride, évaluation de la pertinence et reformulation des requêtes.",
+          "Intégré Gemini pour la génération de rapports et les simulations de jury en français et en anglais, avec un modèle de secours en cas d’échec.",
+          "Évalué la recherche avec RAGAS, suivi les flux de travail IA avec Langfuse et mis en place un système transactionnel de crédits IA.",
+        ],
+        project: { label: "Découvrir SmartPFE", href: "/projects/smartpfe" },
+        logo: { ...experience.logo, alt: "Logo BeeCoders" },
+      },
+      {
+        role: "Stagiaire en ML et génie logiciel",
+        period: "Juillet – août 2025",
+        location: "Tunis, Tunisie",
+        highlights: [
+          "Développé l’interface Angular pour publier, parcourir et gérer les annonces de la marketplace AnnonceTN.",
+          "Créé des API REST Spring Boot avec authentification JWT et collections MongoDB pour les annonces, favoris et activités.",
+          "Conçu un moteur de recommandation Python à partir des interactions, avec NMF, similarité cosinus et prise en charge du démarrage à froid.",
+          "Intégré les recommandations personnalisées à la marketplace et testé les routes API avec Postman.",
+        ],
+        technologies: annonceTnStack.map((name) => name === "Machine Learning" ? "Apprentissage automatique" : name),
+        project: { label: "Découvrir AnnonceTN", href: "/projects/annoncetn" },
+        logo: { ...experience.logo, alt: "Logo QantumShift" },
+      },
+      {
+        role: "Stagiaire full stack",
+        period: "Janvier – juin 2024",
+        location: "Tunis, Tunisie",
+        highlights: [
+          "Développé GazellePro, une plateforme B2B pour les agences de voyages, dédiée à la recherche de vols et aux réservations.",
+          "Intégré les données de vol Amadeus et une API de suggestion d’aéroports en temps réel.",
+          "Conçu des tableaux de bord interactifs et le schéma relationnel dans SQL Server.",
+          "Mis en place l’authentification JWT et le contrôle d’accès par rôle avec Symfony et PHP.",
+        ],
+        project: { label: "Découvrir GazellePro", href: "/projects/gazellepro" },
+        logo: { ...experience.logo, alt: "Logo Tunisair" },
+      },
+      {
+        role: "Stagiaire développeur full stack",
+        period: "Juillet – août 2023",
+        location: "Tunis, Tunisie",
+        highlights: [
+          "Développé un portail pour les retraités : offres de vol, demandes de réservation et suivi des cotisations médicales.",
+          "Mis en place l’authentification et la gestion des sessions des comptes retraités.",
+          "Conçu le schéma MySQL et préparé l’architecture pour l’intégration du paiement en ligne.",
+          "Prototypé l’interface dans Figma et développé une démo responsive en PHP et Bootstrap.",
+        ],
+        project: { label: "Voir le dépôt du portail retraités", href: "https://github.com/MayssenJemmali/tunisair-retirement-portal", external: true },
+        logo: { ...experience.logo, alt: "Logo Tunisair" },
+      },
+    ][index];
+    return { ...experience, ...localized };
+  }),
+  communityRoles: communityRoles.map((role, index) => {
+    const localized = [
+      {
+        role: "Membre du pôle projets",
+        location: "Tunis, Tunisie",
+        logo: { ...role.logo, alt: "Logo Enactus ESB" },
+        highlights: [
+          "Membre de BlightX, une initiative qui aide les producteurs de poires tunisiens à lutter contre une maladie bactérienne destructrice.",
+          { before: "Classée parmi les ", linkText: "10 meilleures équipes du pays", url: "https://lnkd.in/p/eA5GYGsR", after: ", l’équipe a accédé à l’étape avancée de l’Exposition nationale Enactus Tunisie 2026." },
+          "Mené des essais sur le terrain et échangé avec des agriculteurs dans des communautés rurales.",
+        ],
+      },
+      {
+        role: "Bénévole en action communautaire",
+        location: "Tunis, Tunisie",
+        logo: { ...role.logo, alt: "Logo Rotaract Manar Evo" },
+        highlights: [
+          "Coorganisé une initiative de ftour pendant le Ramadan, avec des repas et du soutien pour des familles dans le besoin.",
+          "Contribué à organiser les collectes de nourriture et de vêtements ainsi que la logistique de campagnes nationales de solidarité.",
+        ],
+      },
+      {
+        role: "Équipe marketing et organisation d’événements",
+        location: "Tunis, Tunisie",
+        logo: { ...role.logo, alt: "Logo FUTURA ESPRIT" },
+        highlights: [
+          "Coorganisé des ateliers d’entrepreneuriat et des événements technologiques étudiants sur le campus.",
+          "Créé des supports promotionnels multimédias, coordonné la communication vidéo et contribué aux événements du 20e anniversaire d’ESPRIT.",
+        ],
+      },
+    ][index];
+    return { ...role, ...localized };
+  }),
+};

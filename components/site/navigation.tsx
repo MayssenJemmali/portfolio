@@ -1,19 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeColorPicker } from "./theme-color-picker";
-
-const navigationItems = [
-  { id: "about", label: "About" },
-  { id: "projects", label: "Projects" },
-  { id: "experience", label: "Experience" },
-  { id: "community", label: "Community" },
-  { id: "contact", label: "Contact" },
-];
+import { LanguageSwitcher } from "./language-switcher";
+import { localeCopy } from "@/data/locale-copy";
+import { useLocale } from "@/components/site/locale-provider";
 
 export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: string }) {
+  const { locale } = useLocale();
+  const copy = localeCopy[locale];
+  const navigationItems = [
+    { id: "about", label: copy.navigation.about },
+    { id: "projects", label: copy.navigation.projects },
+    { id: "experience", label: copy.navigation.experience },
+    { id: "community", label: copy.navigation.community },
+    { id: "contact", label: copy.navigation.contact },
+  ];
   const [active, setActive] = useState("about");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [indicatorStyle, setIndicatorStyle] = useState<{
@@ -61,7 +65,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updatePosition = () => {
       const activeEl = itemRefs.current[active];
       const navEl = navRef.current;
@@ -79,7 +83,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
     updatePosition();
     window.addEventListener("resize", updatePosition);
     return () => window.removeEventListener("resize", updatePosition);
-  }, [active]);
+  }, [active, locale]);
 
   return (
     <>
@@ -90,7 +94,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
         {/* Desktop floating pill dock — hidden on mobile */}
         <nav
           ref={navRef}
-          aria-label="Primary navigation"
+          aria-label={copy.navigation.label}
           className="nav-pill-container relative"
         >
           <span
@@ -120,7 +124,8 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
 
         {/* Desktop right: Theme Picker — hidden on mobile */}
         <div className="header-right desktop-only-right">
-          <ThemeColorPicker />
+          <LanguageSwitcher />
+          <ThemeColorPicker locale={locale} />
         </div>
 
         {/* Mobile right: Hamburger only — shown on mobile */}
@@ -129,7 +134,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
             type="button"
             onClick={() => setMobileMenuOpen(true)}
             className="flex items-center justify-center w-10 h-10 rounded-lg border-2 border-[var(--ink)] bg-[#fffaf0] shadow-[2.5px_2.5px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer"
-            aria-label="Open navigation menu"
+            aria-label={copy.navigation.openMenu}
             aria-expanded={mobileMenuOpen}
           >
             <Menu className="w-5 h-5 text-[var(--ink)]" />
@@ -155,19 +160,19 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
           "flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
-        aria-label="Mobile navigation"
+            aria-label={copy.navigation.mobileLinks}
         aria-hidden={!mobileMenuOpen}
       >
         {/* Drawer Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b-2 border-[var(--ink)]">
           <span className="font-mono text-xs font-black uppercase tracking-widest text-[var(--ink)]">
-            Menu
+            {copy.navigation.menu}
           </span>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center justify-center w-8 h-8 rounded-md border-2 border-[var(--ink)] bg-white shadow-[2px_2px_0_var(--ink)] hover:bg-[var(--surface)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
-            aria-label="Close menu"
+            aria-label={copy.navigation.closeMenu}
           >
             <X className="w-4 h-4 text-[var(--ink)]" />
           </button>
@@ -176,7 +181,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-5">
           {/* Nav Links */}
-          <nav className="flex flex-col gap-2" aria-label="Mobile section links">
+          <nav className="flex flex-col gap-2" aria-label={copy.navigation.mobileLinks}>
             {navigationItems.map((item) => {
               const isActive = active === item.id;
               return (
@@ -205,12 +210,19 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
           {/* Divider */}
           <div className="border-t-2 border-[var(--ink)]" />
 
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-[11px] font-black uppercase tracking-widest text-[var(--ink)]">
+              {copy.switcher.label}
+            </span>
+            <LanguageSwitcher />
+          </div>
+
           {/* Theme Color Picker — inside drawer on mobile */}
           <div>
             <p className="font-mono text-[11px] font-black uppercase tracking-widest text-[var(--ink)] mb-3">
-              Theme Color
+              {copy.navigation.themeColor}
             </p>
-            <ThemeColorPicker drawerMode />
+            <ThemeColorPicker drawerMode locale={locale} />
           </div>
         </div>
 
@@ -222,7 +234,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
             rel="noreferrer"
             className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border-2 border-[var(--ink)] bg-[var(--surface)] font-bold text-sm text-[var(--ink)] shadow-[3px_3px_0_var(--ink)] hover:bg-[var(--accent)] hover:text-white transition-colors"
           >
-            <span>View Resume</span>
+            <span>{copy.navigation.viewResume}</span>
             <ArrowUpRight className="w-4 h-4" />
           </a>
         </div>

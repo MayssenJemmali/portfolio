@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { localeCopy, type Locale } from "@/data/locale-copy";
 import {
   Carousel,
   CarouselContent,
@@ -18,7 +19,8 @@ type GalleryImage = {
   height: number;
 };
 
-export function ProjectGallery({ images, label = "Project screenshots" }: { images: GalleryImage[]; label?: string }) {
+export function ProjectGallery({ images, label, locale = "en" }: { images: GalleryImage[]; label?: string; locale?: Locale }) {
+  const copy = localeCopy[locale].casePage;
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(1);
   const [canPrev, setCanPrev] = useState(false);
@@ -41,7 +43,7 @@ export function ProjectGallery({ images, label = "Project screenshots" }: { imag
   }, [api]);
 
   return (
-    <Carousel className="project-gallery" opts={{ align: "start", loop: false }} setApi={setApi} aria-label={label}>
+    <Carousel className="project-gallery" opts={{ align: "start", loop: false }} setApi={setApi} aria-label={label ?? copy.screenshots}>
       <CarouselContent>
         {images.map((image, index) => (
           <CarouselItem key={image.src}>
@@ -64,10 +66,10 @@ export function ProjectGallery({ images, label = "Project screenshots" }: { imag
       <div className="project-gallery-controls">
         <span aria-live="polite">{String(current).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</span>
         <div>
-          <Button className="project-gallery-nav" variant="outline" size="icon" aria-label="Previous screenshot" disabled={!canPrev} onClick={() => api?.scrollPrev()}>
+          <Button className="project-gallery-nav" variant="outline" size="icon" aria-label={copy.previousScreenshot} disabled={!canPrev} onClick={() => api?.scrollPrev()}>
             <ArrowLeft aria-hidden="true" />
           </Button>
-          <Button className="project-gallery-nav" variant="outline" size="icon" aria-label="Next screenshot" disabled={!canNext} onClick={() => api?.scrollNext()}>
+          <Button className="project-gallery-nav" variant="outline" size="icon" aria-label={copy.nextScreenshot} disabled={!canNext} onClick={() => api?.scrollNext()}>
             <ArrowRight aria-hidden="true" />
           </Button>
         </div>
