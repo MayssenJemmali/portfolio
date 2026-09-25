@@ -397,9 +397,57 @@ export const experiences: Experience[] = [
   },
 ];
 
-export const skillGroups = [
-  { title: "AI / ML", skills: ["Python", "RAG", "Embeddings", "Evaluation"] },
-  { title: "Backend", skills: ["REST APIs", "Java", "Node.js", "Databases"] },
-  { title: "Architecture", skills: ["System Design", "Data Modeling", "Messaging", "Testing"] },
-  { title: "DevOps", skills: ["Docker", "CI/CD", "Linux", "Cloud"] },
+export type CommunityRole = {
+  organization: string;
+  role: string;
+  period: string;
+  location: string;
+  url: string;
+  logo: { src: string; alt: string; width: number; height: number };
+  highlights: Array<string | { before: string; linkText: string; url: string; after: string }>;
+};
+
+export const communityRoles: CommunityRole[] = [
+  {
+    organization: "Enactus ESPRIT",
+    role: "Project Member, Project Department",
+    period: "2025 – 2026",
+    location: "Tunis, Tunisia",
+    url: "https://www.instagram.com/enactors.esb/",
+    logo: { src: "/logos/enactus-esprit.png", alt: "Enactus ESB logo", width: 1080, height: 1080 },
+    highlights: [
+      "Core member of BlightX, an initiative helping Tunisian pear farmers combat destructive bacterial disease.",
+      {
+        before: "Ranked among the ",
+        linkText: "top 10 teams nationally",
+        url: "https://lnkd.in/p/eA5GYGsR",
+        after: ", advancing to the 2026 Enactus Tunisia National Exposition's Advanced Stage.",
+      },
+      "Conducted field testing and farmer outreach in agricultural communities.",
+    ],
+  },
+  {
+    organization: "Rotaract Manar Evo",
+    role: "Community Service Volunteer",
+    period: "2025 – 2026",
+    location: "Tunis, Tunisia",
+    url: "https://www.instagram.com/rotaract_manar_evo/",
+    logo: { src: "/logos/rotaract-manar-evo.png", alt: "Rotaract Manar Evo logo", width: 824, height: 824 },
+    highlights: [
+      "Co-organized a Ramadan Iftar initiative providing meals and support to families in need.",
+      "Helped coordinate food and clothing collections and logistics for nationwide solidarity drives.",
+    ],
+  },
+  {
+    organization: "FUTURA ESPRIT",
+    role: "Marketing & Event Organizing Team",
+    period: "2022 – 2024",
+    location: "Tunis, Tunisia",
+    url: "https://www.instagram.com/futuraesprit/",
+    logo: { src: "/logos/futura-esprit.png", alt: "FUTURA ESPRIT logo", width: 566, height: 566 },
+    highlights: [
+      "Co-organized entrepreneurship workshops and student tech events on campus.",
+      "Created multimedia promotional materials, managed video communication, and supported ESPRIT's 20th anniversary events.",
+    ],
+  },
 ];

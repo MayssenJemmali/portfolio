@@ -10,7 +10,7 @@ I am seeking a **6-month end-of-studies internship starting January 2027**.
 
 This repository contains the source code for my responsive portfolio. It introduces my background, presents selected projects and case studies, and provides links to project demos and source repositories where available.
 
-The site includes a compact profile hero, section navigation, project cards with image galleries and video previews, detailed project pages, grouped technical skills, and contact links. Project content and replaceable URLs are kept in `data/portfolio.ts`.
+The site includes a compact profile hero, section navigation, project cards with image galleries and video previews, detailed project pages, a leadership and community section, and contact links. Project content and replaceable URLs are kept in `data/portfolio.ts`.
 
 ## Featured projects
 

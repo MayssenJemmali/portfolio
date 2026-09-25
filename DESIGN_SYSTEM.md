@@ -8,7 +8,7 @@ This portfolio is an **editorial neobrutalist engineering dossier**: direct, str
 
 The recruiter flow is:
 
-**About / Identity → Selected Projects → Professional Experience → Technical Skills → Contact**
+**About / Identity → Selected Projects → Professional Experience → Leadership & Community → Contact**
 
 Every element must either improve comprehension, hierarchy, navigation, or personality. Decoration without a clear purpose should be removed.
 
@@ -109,11 +109,11 @@ When a GitHub or demo URL is absent, keep the action visible but disabled. Never
 
 ## Sections
 
-- Section titles are direct: “Selected Projects,” “Professional Experience,” “Technical Skills,” and “Contact.” The hero serves as About.
+- Section titles are direct: “Selected Projects,” “Professional Experience,” “Leadership & Community,” and “Contact.” The hero serves as About.
 - Do not restore labels such as `00 / Introduction`, numeric section prefixes, or numeric skill/experience decorations.
 - Use consistent content width (`76rem`), section rhythm, and border alignment.
 - Experience remains a readable timeline/list rather than cards.
-- Skills remain grouped and scannable rather than becoming meters, charts, or a logo grid.
+- Leadership & Community uses simple editorial rows, distinct from the Professional Experience cards.
 - Contact remains a strong orange closing panel with direct links.
 
 ## Motion

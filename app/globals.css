@@ -840,13 +840,21 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
   height: 0.95rem;
 }
 
-.skills-section { border-block: 2px solid var(--ink); }
-.skill-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 2px solid var(--ink); box-shadow: var(--hard-shadow); }
-.skill-grid > .reveal:not(:last-child) { border-right: 2px solid var(--ink); }
-.skill-group { height: 100%; min-height: 11rem; background: #fffaf0; padding: 1.25rem; }
-.skill-group h3 { margin: 0 0 1.25rem; font-size: 1.4rem; }
-.skill-group .tag-list { display: grid; }
-.skill-group .tag { width: fit-content; background: transparent; }
+.community-list > .reveal { border-bottom: 2px solid var(--ink); }
+.community-role { padding: clamp(1.3rem, 3vw, 2rem) 0; }
+.community-heading { display: flex; align-items: center; gap: 1rem; }
+.community-heading .community-logo-box { width: 4.5rem; height: 4.5rem; padding: 0; }
+.community-logo-box img { object-fit: cover; }
+.community-identity { flex: 1 1 0; min-width: 0; }
+.community-identity h3 { margin: 0; font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-size: clamp(1.2rem, 2vw, 1.55rem); line-height: 1.15; letter-spacing: -0.025em; }
+.community-identity h3 a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.2rem; }
+.community-position { margin: 0.25rem 0 0; color: #514d46; font-size: 0.98rem; font-weight: 700; }
+.community-location { margin: 0.1rem 0 0; color: #5e5a52; font-size: 0.85rem; }
+.community-period { flex: 0 0 auto; align-self: flex-start; margin: 0 0 0 auto; border: 2px solid var(--ink); border-radius: 0.2rem; background: var(--surface); padding: 0.4rem 0.75rem; box-shadow: 2px 2px 0 var(--ink); font-family: var(--font-mono); font-size: 1rem; font-weight: 850; white-space: nowrap; }
+.community-highlights { display: grid; gap: 0.65rem; max-width: 75rem; margin: 1rem 0 0 5.5rem; padding: 0; list-style: none; }
+.community-highlights li { display: flex; align-items: flex-start; gap: 0.85rem; font-size: 1rem; line-height: 1.55; }
+.community-highlight-link { font-weight: 800; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.18rem; }
+.community-highlight-link:hover { color: var(--accent); }
 
 .contact-section { padding-bottom: clamp(5rem, 10vw, 9rem); }
 .contact-panel { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.55fr); gap: clamp(2rem, 8vw, 7rem); border: 2px solid var(--ink); background: var(--accent); padding: clamp(1.5rem, 5vw, 4rem); box-shadow: 8px 8px 0 var(--ink); }
@@ -908,9 +916,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
     justify-content: center;
     width: 100%;
   }
-  .skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-right: 6px; }
-  .skill-grid > .reveal:nth-child(2) { border-right: 0; }
-  .skill-grid > .reveal:nth-child(-n + 2) { border-bottom: 2px solid var(--ink); }
+  .community-heading { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); column-gap: 1rem; row-gap: 0.65rem; }
+  .community-period { grid-column: 2; justify-self: start; margin: 0; }
+  .community-highlights { margin-left: 0; }
   .contact-secondary { grid-template-columns: 1fr; }
   .contact-secondary > *:not(:last-child) { border-right: 0; border-bottom: 2px solid var(--ink); }
 }
@@ -974,10 +982,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outlin
   .portrait-panel { min-height: 14rem; margin-top: 1.5rem; }
   .portrait-panel img { width: min(72%, 14rem); max-height: 17rem; }
   .portrait-accent { inset: 10% 12% 0; }
-  .skill-grid { grid-template-columns: 1fr; }
-  .skill-grid > .reveal { border-right: 0 !important; border-bottom: 2px solid var(--ink); }
-  .skill-grid > .reveal:last-child { border-bottom: 0; }
-  .skill-group { min-height: 12rem; }
+  .community-heading { column-gap: 0.75rem; }
   .experience-card-identity { gap: 0.75rem; }
   .experience-logo-box { width: 3rem; height: 3rem; }
   .experience-role { font-size: 1.15rem; }

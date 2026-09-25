@@ -1,15 +1,15 @@
 import { ArrowUpRight, Mail } from "lucide-react";
 
 import { Navigation } from "@/components/site/navigation";
+import { CommunityRole } from "@/components/site/community-role";
 import {
   ExperienceItem,
   ProjectCard,
   ProfileActions,
   SectionHeading,
-  TechnologyTag,
 } from "@/components/site/portfolio-parts";
 import { Reveal } from "@/components/site/reveal";
-import { experiences, profile, projects, skillGroups } from "@/data/portfolio";
+import { communityRoles, experiences, profile, projects } from "@/data/portfolio";
 
 export default function Home() {
   return (
@@ -78,22 +78,17 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section skills-section" id="skills" aria-labelledby="skills-title">
+        <section className="section community-section" id="community" aria-labelledby="community-title">
           <Reveal>
             <SectionHeading
-              title="Technical Skills"
-              id="skills-title"
+              title="Leadership & Community"
+              id="community-title"
             />
           </Reveal>
-          <div className="skill-grid">
-            {skillGroups.map((group, index) => (
-              <Reveal key={group.title} delay={index * 60}>
-                <article className="skill-group">
-                  <h3>{group.title}</h3>
-                  <ul className="tag-list" aria-label={`${group.title} skills`}>
-                    {group.skills.map((skill) => <TechnologyTag key={skill} name={skill} />)}
-                  </ul>
-                </article>
+          <div className="community-list">
+            {communityRoles.map((role, index) => (
+              <Reveal key={role.organization} delay={index * 60}>
+                <CommunityRole role={role} />
               </Reveal>
             ))}
           </div>
