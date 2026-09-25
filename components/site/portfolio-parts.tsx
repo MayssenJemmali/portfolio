@@ -1,4 +1,4 @@
-import { ArrowUpRight, ExternalLink, LockKeyhole } from "lucide-react";
+import { ArrowUpRight, ExternalLink, LockKeyhole, MapPin, Trophy } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { TechnologyIcon } from "@/components/site/technology-icon";
 import { ProjectCover } from "@/components/site/project-cover";
 import { ProjectVideoPreview } from "@/components/site/project-video-preview";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function Tag({ children, className }: { children: ReactNode; className?: string }) {
   return <li className={cn("tag", className)}>{children}</li>;
@@ -134,7 +135,23 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="project-card-body">
         <CardHeader className="p-0 mb-3">
           <CardTitle>
-            <h3 id={`${project.id}-title`}>{project.title}</h3>
+            <div className="project-title-row">
+              <h3 id={`${project.id}-title`}>{project.title}</h3>
+              {project.award && (
+                <a
+                  href={project.award.postUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="project-award-badge"
+                  title="View 1st Prize award post on LinkedIn, opens in a new tab"
+                  aria-label={`${project.award.label} on LinkedIn`}
+                >
+                  <Trophy className="project-award-icon" aria-hidden="true" />
+                  <span>{project.award.label}</span>
+                  <ArrowUpRight className="project-award-arrow" aria-hidden="true" />
+                </a>
+              )}
+            </div>
           </CardTitle>
           <CardDescription className="mt-2 text-sm leading-relaxed">
             {project.description}
@@ -172,10 +189,17 @@ export function ProjectCard({ project }: { project: Project }) {
             <span>GitHub</span>
           </a>
         ) : project.sourceAvailability === "closed" ? (
-          <span aria-disabled="true" title="Source code is closed under contract">
-            <LockKeyhole aria-hidden="true" />
-            <span>Closed source</span>
-          </span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span aria-disabled="true" tabIndex={0} className="focus-visible:outline-3 focus-visible:outline-offset-[-3px] focus-visible:outline-primary">
+                <LockKeyhole aria-hidden="true" />
+                <span>Closed source</span>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" sideOffset={6}>
+              Source code is closed under contract and cannot be shared publicly.
+            </TooltipContent>
+          </Tooltip>
         ) : (
           <span aria-disabled="true" title="No repository URL provided yet">
             <TechnologyIcon name="GitHub" />
@@ -205,17 +229,88 @@ export function ProjectCard({ project }: { project: Project }) {
 
 export function ExperienceItem({ experience }: { experience: Experience }) {
   return (
-    <article className="experience-item">
-      <div>
-        <p className="experience-period">{experience.period}</p>
-        <h3>{experience.role}</h3>
-        <p className="experience-organization">{experience.organization}</p>
+    <article className="experience-card">
+      <div className="experience-card-header">
+        <div className="experience-card-identity">
+          <a
+            className="experience-logo-box"
+            href={experience.organizationUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Visit ${experience.organization}, opens in a new tab`}
+          >
+            <img
+              src={experience.logo.src}
+              alt={experience.logo.alt}
+              width={experience.logo.width}
+              height={experience.logo.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+          <div className="experience-title-group">
+            <h3 className="experience-role">{experience.role}</h3>
+            <div className="experience-meta-row">
+              <a className="experience-org" href={experience.organizationUrl} target="_blank" rel="noreferrer" aria-label={`Visit ${experience.organization}, opens in a new tab`}>
+                {experience.organization}
+              </a>
+              <span className="experience-meta-sep" aria-hidden="true">
+                •
+              </span>
+              <span className="experience-location">
+                <MapPin className="experience-location-icon" aria-hidden="true" />
+                {experience.location}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="experience-period-badge">
+          <span>{experience.period}</span>
+        </div>
       </div>
-      <div className="experience-detail">
-        <p>{experience.summary}</p>
-        <ul className="tag-list" aria-label={`${experience.role} technologies`}>
-          {experience.technologies.map((technology) => <TechnologyTag key={technology} name={technology} />)}
+
+      <div className="experience-card-body">
+        <ul className="experience-bullets" aria-label={`${experience.role} key deliverables at ${experience.organization}`}>
+          {experience.highlights.map((highlight) => (
+            <li key={highlight} className="experience-bullet">
+              <span className="experience-bullet-marker" aria-hidden="true" />
+              <span className="experience-bullet-text">{highlight}</span>
+            </li>
+          ))}
         </ul>
+      </div>
+
+      <div className="experience-card-footer">
+        <div className="experience-tech-group">
+          <ul className="tag-list" aria-label={`${experience.role} technologies`}>
+            {experience.technologies.map((technology) => (
+              <TechnologyTag key={technology} name={technology} />
+            ))}
+          </ul>
+        </div>
+
+        {experience.project?.external ? (
+          <a
+            className="experience-project-btn"
+            href={experience.project.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${experience.project.label}, opens in a new tab`}
+          >
+            <span>{experience.project.label}</span>
+            <ArrowUpRight className="experience-btn-icon" aria-hidden="true" />
+          </a>
+        ) : experience.project ? (
+          <Link
+            className="experience-project-btn"
+            href={experience.project.href}
+            aria-label={`${experience.project.label} case study`}
+          >
+            <span>{experience.project.label}</span>
+            <ArrowUpRight className="experience-btn-icon" aria-hidden="true" />
+          </Link>
+        ) : null}
       </div>
     </article>
   );

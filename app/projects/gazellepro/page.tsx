@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { TechnologyTag } from "@/components/site/portfolio-parts";
-import { TechnologyIcon } from "@/components/site/technology-icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { VideoJsPlayer } from "@/components/site/videojs-player";
 import { gazelleProDetail, projects } from "@/data/portfolio";
 
@@ -58,9 +58,18 @@ export default function GazelleProPage() {
                 <Button asChild className="neo-button">
                   <a href="#demo"><Play aria-hidden="true" /> Watch demo</a>
                 </Button>
-                <Button variant="outline" className="neo-button" disabled title="Source code is closed">
-                  <LockKeyhole aria-hidden="true" /> Closed source
-                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span tabIndex={0} className="inline-flex cursor-not-allowed focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-primary">
+                      <Button variant="outline" className="neo-button pointer-events-none" disabled>
+                        <LockKeyhole aria-hidden="true" /> Closed source
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" sideOffset={6}>
+                    Source code is closed under contract and cannot be shared publicly.
+                  </TooltipContent>
+                </Tooltip>
               </div>
             </header>
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowLeft, ArrowUpRight, LockKeyhole, Play } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, LockKeyhole, Play, Trophy } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,8 @@ import {
 import { ArchitectureViewer } from "@/components/site/architecture-viewer";
 import { VideoJsPlayer } from "@/components/site/videojs-player";
 import { TechnologyTag } from "@/components/site/portfolio-parts";
+import { TechnologyIcon } from "@/components/site/technology-icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { deepSkynDetail, projects } from "@/data/portfolio";
 
 export const metadata: Metadata = {
@@ -45,23 +47,92 @@ export default function DeepSkynPage() {
           </div>
 
           <article className="case-article">
-            <header className="case-intro">
-              <p className="case-eyebrow">Selected project / Case study</p>
-              <h1>DeepSkyn</h1>
-              <p className="case-lead">{deepSkynDetail.lead}</p>
-              <ul className="tag-list" aria-label="DeepSkyn technologies">
-                {project.technologies.map((name) => (
-                  <TechnologyTag key={name} name={name} iconName={project.technologyIcons?.[name]} />
-                ))}
-              </ul>
-              <div className="case-actions">
-                <Button asChild className="neo-button">
-                  <a href="#demo"><Play aria-hidden="true" /> Watch app demo</a>
-                </Button>
-                <Button variant="outline" className="neo-button" disabled title="Source code is closed under contract">
-                  <LockKeyhole aria-hidden="true" /> Closed source
-                </Button>
+            <header className="case-intro case-intro--with-award">
+              <div className="case-intro-main">
+                <p className="case-eyebrow">Selected project / Case study</p>
+                <h1>DeepSkyn</h1>
+                <p className="case-lead">{deepSkynDetail.lead}</p>
+
+                {deepSkynDetail.award && (
+                  <div className="case-award-card">
+                    <div className="case-award-card-header">
+                      <span className="case-award-badge">
+                        <Trophy className="w-3.5 h-3.5" aria-hidden="true" />
+                        1st Prize · ESPRIT Bal des Projets 2026
+                      </span>
+                      <span className="case-award-category">{deepSkynDetail.award.category}</span>
+                    </div>
+                    <p className="case-award-text">
+                      Won 1st place at ESPRIT&apos;s annual project fair (Bal des Projets), awarded by an academic &amp; industry jury to Team SuperNova.
+                    </p>
+                    <a
+                      href={deepSkynDetail.award.postUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="case-award-link"
+                      aria-label="View 1st Prize award post on LinkedIn, opens in a new tab"
+                    >
+                      <TechnologyIcon name="LinkedIn" />
+                      <span>View award post on LinkedIn</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                    </a>
+                  </div>
+                )}
+
+                <ul className="tag-list" aria-label="DeepSkyn technologies">
+                  {project.technologies.map((name) => (
+                    <TechnologyTag key={name} name={name} iconName={project.technologyIcons?.[name]} />
+                  ))}
+                </ul>
+
+                <div className="case-actions">
+                  <Button asChild className="neo-button">
+                    <a href="#demo"><Play aria-hidden="true" /> Watch app demo</a>
+                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span tabIndex={0} className="inline-flex cursor-not-allowed focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-primary">
+                        <Button variant="outline" className="neo-button pointer-events-none" disabled>
+                          <LockKeyhole aria-hidden="true" /> Closed source
+                        </Button>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" sideOffset={6}>
+                      Source code is closed under contract and cannot be shared publicly.
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
               </div>
+
+              {deepSkynDetail.award && (
+                <aside className="case-intro-certificate">
+                  <figure className="case-certificate-card">
+                    <div className="case-certificate-header">
+                      <span>Official Certificate</span>
+                      <span className="case-certificate-hint">Enlarge ↗</span>
+                    </div>
+                    <a
+                      href={deepSkynDetail.award.certificate.src}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label="View the full resolution DeepSkyn award certificate in a new tab"
+                      className="case-certificate-link"
+                    >
+                      <img
+                        src={deepSkynDetail.award.certificate.src}
+                        alt={deepSkynDetail.award.certificate.alt}
+                        width={deepSkynDetail.award.certificate.width}
+                        height={deepSkynDetail.award.certificate.height}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </a>
+                    <figcaption>
+                      1st Prize certificate awarded to Team SuperNova for DeepSkyn at ESPRIT&apos;s 13th Bal des Projets.
+                    </figcaption>
+                  </figure>
+                </aside>
+              )}
             </header>
 
             <section className="case-section" aria-labelledby="deepskyn-overview">

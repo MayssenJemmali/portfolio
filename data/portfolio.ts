@@ -14,14 +14,33 @@ export type Project = {
   liveUrl?: string;
   liveLabel?: string;
   highlights: string[];
+  award?: ProjectAward;
+};
+
+export type ProjectAward = {
+  label: string;
+  badge?: string;
+  event?: string;
+  category?: string;
+  team?: string;
+  date?: string;
+  summary: string;
+  detail: string;
+  certificate: { src: string; alt: string; width: number; height: number };
+  postUrl: string;
 };
 
 export type Experience = {
   role: string;
   organization: string;
+  organizationUrl: string;
   period: string;
-  summary: string;
+  location: string;
+  logo: { src: string; alt: string; width: number; height: number };
+  highlights: string[];
+  awardLabel?: string;
   technologies: string[];
+  project?: { label: string; href: string; external?: boolean };
 };
 
 export const profile = {
@@ -38,7 +57,7 @@ export const profile = {
   email: "MohamedMayssen.Jemmali@esprit.tn",
   emailUrl: "mailto:MohamedMayssen.Jemmali@esprit.tn",
   githubUrl: "https://github.com/MayssenJemmali",
-  linkedinUrl: "https://www.linkedin.com/in/mayssen-jemmali-a1509b283/",
+  linkedinUrl: "https://www.linkedin.com/in/mayssen-jemmali/",
   resumeUrl: "/resume-en.pdf",
 };
 
@@ -56,13 +75,35 @@ const gazelleProDemo = {
   watchUrl: "https://youtu.be/1i9RVXQIwSo",
 };
 
+const deepSkynAward: ProjectAward = {
+  label: "1st Prize · Bal des Projets '26",
+  badge: "1st Prize",
+  event: "13th Bal des Projets 2026",
+  category: "FullStack JavaScript Project",
+  team: "SuperNova",
+  date: "9 June 2026",
+  summary: "Awarded 1st Prize (Premier Prix) for FullStack JavaScript at ESPRIT's 13th Bal des Projets in 2026.",
+  detail: "DeepSkyn, built by the SuperNova team, won the Premier Prix for the FullStack JavaScript Project entry at ESPRIT's 13th Bal des Projets on 9 June 2026.",
+  certificate: {
+    src: "/projects/deepskyn-first-prize-certificate.jpg",
+    alt: "ESPRIT Bal des Projets 2026 certificate awarding Premier Prix to SuperNova for the FullStack JavaScript Project entry",
+    width: 3507,
+    height: 2480,
+  },
+  postUrl: "https://www.linkedin.com/posts/mayssen-jemmali_deepskyn-ai-fullstack-ugcPost-7470530196916523008-_o2D/",
+};
+
+const smartPfeStack = ["React", "Express", "MongoDB", "Python", "Gemini API", "RAG"];
+const annonceTnStack = ["Angular", "Spring Boot", "MongoDB", "Python", "Machine Learning"];
+const gazelleProStack = ["Symfony", "PHP", "SQL Server", "Amadeus API"];
+
 export const projects: Project[] = [
   {
     id: "smartpfe",
     title: "SmartPFE",
     description:
       "SmartPFE guides students through their final-year project, from defining requirements to writing the thesis report. Gemini-powered assistance and a simulated jury help them prepare for the defense.",
-    technologies: ["React", "Express", "MongoDB", "Python", "Gemini API", "RAG"],
+    technologies: smartPfeStack,
     image: {
       src: "/projects/smartpfe-overview.png",
       alt: "SmartPFE student workspace showing thesis progress and the guided project roadmap",
@@ -85,6 +126,7 @@ export const projects: Project[] = [
   {
     id: "deepskyn",
     title: "DeepSkyn",
+    award: deepSkynAward,
     description:
       "DeepSkyn analyzes skin photos to create personalized reports and skincare routines. The platform brings AI guidance, product discovery, and progress tracking together, backed by an automated delivery pipeline.",
     technologies: ["React", "NestJS", "PostgreSQL", "Gemini API", "Docker", "CI/CD"],
@@ -113,7 +155,7 @@ export const projects: Project[] = [
     title: "AnnonceTN",
     description:
       "A three-tier marketplace built during my QantumShift internship, with personalized item recommendations informed by user activity.",
-    technologies: ["Angular", "Spring Boot", "MongoDB", "Python", "Machine Learning"],
+    technologies: annonceTnStack,
     image: {
       src: "/projects/annoncetn-landing.png",
       alt: "AnnonceTN category landing page showing categories for cars, land, furniture, animals, and multimedia",
@@ -135,11 +177,11 @@ export const projects: Project[] = [
     title: "GazellePro",
     description:
       "A Tunisair B2B portal for travel agencies, with Amadeus flight data and partner workflows.",
-    technologies: ["Symfony", "PHP", "MySQL", "Amadeus API"],
+    technologies: gazelleProStack,
     technologyIcons: {
       Symfony: "Symfony",
       PHP: "PHP",
-      MySQL: "MySQL",
+      "SQL Server": "SQL Server",
       "Amadeus API": "Amadeus API",
     },
     image: {
@@ -203,6 +245,7 @@ export const smartPfeDetail = {
 };
 
 export const deepSkynDetail = {
+  award: deepSkynAward,
   lead: "An AI-assisted skincare platform that connects photo-based skin analysis, personalized routines, and product discovery.",
   intro: "DeepSkyn gives people one place to understand their skin profile, review analysis reports, and build a routine they can keep using. The team built it under contract, so the source and live application are private.",
   journey: [
@@ -278,7 +321,7 @@ export const gazelleProDetail = {
   ],
   architecture: [
     { title: "Web application", detail: "The portal was built with Symfony and PHP." },
-    { title: "Data layer", detail: "MySQL supports the portal’s business data." },
+    { title: "Data layer", detail: "SQL Server supports the portal’s business data." },
     { title: "Access and accountability", detail: "JWT authentication, role-based access control, and audit logging secure and record user activity." },
     { title: "Amadeus API integration", detail: "The Amadeus API supports the portal’s search and booking flow." },
   ],
@@ -289,28 +332,68 @@ export const gazelleProDetail = {
 
 export const experiences: Experience[] = [
   {
-    role: "AI Engineering Internship",
-    organization: "Organization Name",
-    period: "20XX - 20XX",
-    summary:
-      "Replace with a concise account of the system, your ownership, and the technical problem you solved.",
-    technologies: ["Python", "RAG", "APIs"],
+    role: "AI & Software Engineering Intern",
+    organization: "BeeCoders",
+    organizationUrl: "https://www.beecoders.tn",
+    period: "Jun - Aug 2026",
+    location: "Tunis, Tunisia",
+    logo: { src: "/logos/beecoders.png", alt: "BeeCoders logo", width: 165, height: 151 },
+    highlights: [
+      "Built SmartPFE with React, Express, and MongoDB to guide students from requirements and UML through thesis writing and defense preparation.",
+      "Engineered a Corrective RAG pipeline over 3,092 thesis sections from 31 reports, with hybrid retrieval, relevance grading, and query rewriting.",
+      "Integrated Gemini for report generation and jury simulations in French and English, with model fallback when requests fail.",
+      "Evaluated retrieval with RAGAS, traced AI workflows with Langfuse, and implemented a transactional AI credit system.",
+    ],
+    technologies: smartPfeStack,
+    project: { label: "Explore SmartPFE", href: "/projects/smartpfe" },
   },
   {
-    role: "Software Engineering Internship",
-    organization: "Organization Name",
-    period: "20XX - 20XX",
-    summary:
-      "Replace with the backend, product, or infrastructure work that best supports your target roles.",
-    technologies: ["Backend", "Databases", "Testing"],
+    role: "ML & Software Engineering Intern",
+    organization: "QantumShift",
+    organizationUrl: "https://www.linkedin.com/company/qantumshift/",
+    period: "Jul - Aug 2025",
+    location: "Tunis, Tunisia",
+    logo: { src: "/logos/qantumshift.png", alt: "QantumShift logo", width: 200, height: 200 },
+    highlights: [
+      "Built the Angular interface for publishing, browsing, and managing AnnonceTN marketplace listings.",
+      "Developed Spring Boot REST APIs with JWT authentication and MongoDB collections for listings, favorites, and activity.",
+      "Created a Python recommendation engine using user interactions, NMF, and cosine similarity, with a cold-start fallback.",
+      "Connected personalized suggestions to the marketplace and tested API endpoints with Postman.",
+    ],
+    technologies: annonceTnStack,
+    project: { label: "Explore AnnonceTN", href: "/projects/annoncetn" },
   },
   {
-    role: "Engineering Project",
-    organization: "University / Team",
-    period: "20XX",
-    summary:
-      "Replace with a collaborative project that demonstrates architecture, delivery, or technical leadership.",
-    technologies: ["Architecture", "DevOps", "Collaboration"],
+    role: "Full-Stack Intern",
+    organization: "Tunisair",
+    organizationUrl: "https://www.tunisair.com/en",
+    period: "Jan - Jun 2024",
+    location: "Tunis, Tunisia",
+    logo: { src: "/logos/tunisair.png", alt: "Tunisair logo", width: 320, height: 320 },
+    highlights: [
+      "Built GazellePro, a B2B travel-agency platform for flight search and reservation workflows.",
+      "Integrated Amadeus flight data and a real-time airport suggestion API.",
+      "Designed interactive dashboards and the relational schema in SQL Server.",
+      "Implemented JWT authentication and role-based access control with Symfony and PHP.",
+    ],
+    technologies: gazelleProStack,
+    project: { label: "Explore GazellePro", href: "/projects/gazellepro" },
+  },
+  {
+    role: "Full-Stack Developer Intern",
+    organization: "Tunisair",
+    organizationUrl: "https://www.tunisair.com/en",
+    period: "Jul - Aug 2023",
+    location: "Tunis, Tunisia",
+    logo: { src: "/logos/tunisair.png", alt: "Tunisair logo", width: 320, height: 320 },
+    highlights: [
+      "Developed a retiree portal for flight offers, reservation requests, and medical contribution workflows.",
+      "Built authentication and session management for retiree accounts.",
+      "Designed the MySQL schema and prepared the architecture for online payment integration.",
+      "Prototyped the interface in Figma and built the responsive PHP and Bootstrap demo.",
+    ],
+    technologies: ["PHP", "MySQL", "JavaScript", "Bootstrap"],
+    project: { label: "View retiree portal repo", href: "https://github.com/MayssenJemmali/tunisair-retirement-portal", external: true },
   },
 ];
 

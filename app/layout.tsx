@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "video.js/dist/video-js.css";
 import "./globals.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Jemmali Mohamed Mayssen | Software Engineering & AI",
@@ -21,7 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <TooltipProvider delayDuration={150}>
+          {children}
+        </TooltipProvider>
+      </body>
     </html>
   );
 }

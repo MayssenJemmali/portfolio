@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import {
   Braces,
   BrainCircuit,
@@ -34,6 +35,9 @@ const brandIcons: Record<string, string> = {
   Symfony: "/icons/tech/symfony-original.svg",
   PHP: "/icons/tech/php-original.svg",
   MySQL: "/icons/tech/mysql-original.svg",
+  "SQL Server": "/icons/tech/microsoftsqlserver-original.svg",
+  JavaScript: "/icons/tech/javascript-original.svg",
+  Bootstrap: "/icons/tech/bootstrap-original.svg",
   "Amadeus API": "/icons/tech/amadeus-logo.svg",
   GitHub: "/icons/tech/github.svg",
   LinkedIn: "/icons/tech/linkedin.svg",
@@ -87,6 +91,6 @@ export function TechnologyIcon({ name }: { name: string }) {
     );
   }
 
-  const ConceptIcon = conceptFor(name);
-  return <ConceptIcon className="technology-icon" aria-hidden="true" />;
+
+  return createElement(conceptFor(name), { className: "technology-icon", "aria-hidden": true });
 }

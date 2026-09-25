@@ -34,7 +34,7 @@ A marketplace developed during my QantumShift internship in 2025. It combines an
 
 ### GazellePro
 
-A B2B portal built during my Tunisair internship. It brings travel-agency workflows for contracts, claims, financial reporting, and credit together with Amadeus flight data. The application uses Symfony, PHP, and MySQL, with JWT authentication, role-based access control, and audit logging.
+A B2B portal built during my Tunisair internship. It brings travel-agency workflows for contracts, claims, financial reporting, and credit together with Amadeus flight data. The application uses Symfony, PHP, and SQL Server, with JWT authentication and role-based access control.
 
 [Video demo](https://youtu.be/1i9RVXQIwSo)
 
@@ -42,7 +42,8 @@ A B2B portal built during my Tunisair internship. It brings travel-agency workfl
 
 - **AI & Software Engineering Intern — BeeCoders** · Tunis · Jun–Aug 2026
 - **ML & Software Engineering Intern — QantumShift** · Tunis · Jul–Aug 2025
-- **Full-Stack Developer Intern — Tunisair** · Tunis · Jan–Jun 2024
+- **Full-Stack Intern — Tunisair** · Tunis · Jan–Jun 2024
+- **Full-Stack Developer Intern — Tunisair** · Tunis · Jul–Aug 2023
 
 ## Education
 
