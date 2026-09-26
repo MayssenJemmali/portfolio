@@ -28,6 +28,19 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
 
   const navRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
+  const pendingNavTarget = useRef<string | null>(null);
+  const navScrollTimer = useRef<number | null>(null);
+
+  const handleSectionNavigation = (id: string) => {
+    pendingNavTarget.current = id;
+    setActive(id);
+    if (navScrollTimer.current !== null) window.clearTimeout(navScrollTimer.current);
+    // Fallback for browsers that do not dispatch scrollend.
+    navScrollTimer.current = window.setTimeout(() => {
+      pendingNavTarget.current = null;
+      navScrollTimer.current = null;
+    }, 1800);
+  };
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -43,8 +56,20 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
       .map(({ id }) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
     let frame = 0;
+    const finishNavigation = () => {
+      const target = pendingNavTarget.current;
+      if (!target) return;
+      pendingNavTarget.current = null;
+      if (navScrollTimer.current !== null) window.clearTimeout(navScrollTimer.current);
+      navScrollTimer.current = null;
+      setActive(target);
+    };
     const updateActive = () => {
       frame = 0;
+      if (pendingNavTarget.current) {
+        setActive(pendingNavTarget.current);
+        return;
+      }
       const marker = Math.min(window.innerHeight * 0.3, 240);
       const current = sections.reduce((found, section) =>
         section.getBoundingClientRect().top <= marker ? section.id : found,
@@ -58,9 +83,12 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
     updateActive();
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
     window.addEventListener("resize", scheduleUpdate);
+    document.addEventListener("scrollend", finishNavigation);
     return () => {
       window.removeEventListener("scroll", scheduleUpdate);
       window.removeEventListener("resize", scheduleUpdate);
+      document.removeEventListener("scrollend", finishNavigation);
+      if (navScrollTimer.current !== null) window.clearTimeout(navScrollTimer.current);
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
@@ -113,6 +141,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
                 key={item.id}
                 ref={(el) => { itemRefs.current[item.id] = el; }}
                 href={`#${item.id}`}
+                onClick={() => handleSectionNavigation(item.id)}
                 className={cn("nav-pill-item", isActive && "is-active")}
                 aria-current={isActive ? "location" : undefined}
               >
@@ -188,7 +217,10 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    handleSectionNavigation(item.id);
+                    setMobileMenuOpen(false);
+                  }}
                   className={cn(
                     "flex items-center justify-between px-4 py-3 rounded-lg border-2 border-[var(--ink)]",
                     "font-sans font-extrabold text-base transition-all",
