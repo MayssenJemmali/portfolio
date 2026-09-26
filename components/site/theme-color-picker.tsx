@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Palette, RotateCcw, X } from "lucide-react";
+import { Check, Moon, Palette, RotateCcw, Sun, X } from "lucide-react";
 import { localeCopy, type Locale } from "@/data/locale-copy";
 
+const DEFAULT_ACCENT = "#4d85ff";
+
 const PRESET_COLORS = [
+  { name: "Default Blue", color: DEFAULT_ACCENT },
   { name: "Original Orange", color: "#ff5a1f" },
   { name: "Electric Blue", color: "#2563eb" },
   { name: "Neon Emerald", color: "#10b981" },
@@ -17,7 +20,8 @@ const PRESET_COLORS = [
 
 // Shared color logic as a hook
 function useThemeColor() {
-  const [currentColor, setCurrentColor] = useState("#ff5a1f");
+  const [currentColor, setCurrentColor] = useState(DEFAULT_ACCENT);
+  const [isDark, setIsDark] = useState(false);
 
   const applyColor = (color: string) => {
     setCurrentColor(color);
@@ -31,35 +35,79 @@ function useThemeColor() {
     }
   };
 
+  const applyMode = (dark: boolean) => {
+    setIsDark(dark);
+    try {
+      localStorage.setItem("portfolio_theme_mode", dark ? "dark" : "light");
+    } catch {
+      // Ignore if localStorage is restricted
+    }
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    window.dispatchEvent(new CustomEvent("portfolio-theme-mode-change", { detail: dark }));
+  };
+
   useEffect(() => {
+    const syncMode = (event: Event) => setIsDark((event as CustomEvent<boolean>).detail);
+    window.addEventListener("portfolio-theme-mode-change", syncMode);
     try {
       const saved = localStorage.getItem("portfolio_theme_accent");
       if (saved) applyColor(saved);
+      applyMode(localStorage.getItem("portfolio_theme_mode") === "dark");
     } catch {
       // Ignore
     }
+    return () => window.removeEventListener("portfolio-theme-mode-change", syncMode);
   }, []);
 
-  return { currentColor, applyColor };
+  return { currentColor, applyColor, isDark, toggleMode: () => applyMode(!isDark) };
 }
 
 // Shared picker UI (used both in desktop popover and drawer)
 function PickerContent({
   currentColor,
   applyColor,
+  isDark,
+  toggleMode,
   onClose,
   showClose,
   locale = "en",
 }: {
   currentColor: string;
   applyColor: (c: string) => void;
+  isDark: boolean;
+  toggleMode: () => void;
   onClose?: () => void;
   showClose?: boolean;
   locale?: Locale;
 }) {
+  const [hexInput, setHexInput] = useState(currentColor.toUpperCase());
   const copy = localeCopy[locale].theme;
+  useEffect(() => setHexInput(currentColor.toUpperCase()), [currentColor]);
+
+  const normalizeHex = (value: string) => {
+    const trimmed = value.trim();
+    const candidate = trimmed.startsWith("#") ? trimmed : `#${trimmed}`;
+    return /^#[\da-fA-F]{6}$/.test(candidate) ? candidate.toLowerCase() : null;
+  };
+
+  const handleHexChange = (value: string) => {
+    const nextValue = value.slice(0, 7);
+    setHexInput(nextValue);
+    const normalized = normalizeHex(nextValue);
+    if (normalized) applyColor(normalized);
+  };
+
+  const commitHexInput = () => {
+    const normalized = normalizeHex(hexInput);
+    if (normalized) {
+      applyColor(normalized);
+      setHexInput(normalized.toUpperCase());
+    } else {
+      setHexInput(currentColor.toUpperCase());
+    }
+  };
   const presetNames = locale === "fr"
-    ? ["Orange d’origine", "Bleu électrique", "Vert émeraude", "Rouge cramoisi", "Violet néon", "Ambre solaire", "Turquoise menthe", "Encre monochrome"]
+    ? ["Bleu par défaut", "Orange d’origine", "Bleu électrique", "Vert émeraude", "Rouge cramoisi", "Violet néon", "Ambre solaire", "Turquoise menthe", "Encre monochrome"]
     : PRESET_COLORS.map(({ name }) => name);
   return (
     <>
@@ -70,7 +118,18 @@ function PickerContent({
           </p>
           <p className="text-[11px] text-muted-foreground">{copy.testColors}</p>
         </div>
-        {showClose && onClose && (
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleMode}
+            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--ink)] bg-[var(--surface)] px-2.5 py-1 font-mono text-[10px] font-bold text-[var(--ink)] transition-colors hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] cursor-pointer"
+            aria-label={isDark ? copy.switchToLight : copy.switchToDark}
+            aria-pressed={isDark}
+          >
+            {isDark ? <Sun className="w-3.5 h-3.5" aria-hidden="true" /> : <Moon className="w-3.5 h-3.5" aria-hidden="true" />}
+            {isDark ? copy.lightMode : copy.darkMode}
+          </button>
+          {showClose && onClose && (
           <button
             type="button"
             onClick={onClose}
@@ -79,7 +138,8 @@ function PickerContent({
           >
             <X className="w-4 h-4" />
           </button>
-        )}
+          )}
+        </div>
       </div>
 
       <div className="space-y-3">
@@ -94,7 +154,7 @@ function PickerContent({
                   type="button"
                   onClick={() => applyColor(preset.color)}
                   title={presetNames[index]}
-                  className="flex flex-col items-center gap-1 p-1.5 rounded border border-[var(--ink)] bg-white hover:bg-[var(--surface)] transition-all cursor-pointer shadow-[1.5px_1.5px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5"
+                  className="flex flex-col items-center gap-1 p-1.5 rounded border border-[var(--ink)] bg-[var(--card)] hover:bg-[var(--surface)] transition-all cursor-pointer shadow-[1.5px_1.5px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5"
                 >
                   <span
                     className="w-5 h-5 rounded-full border border-[var(--ink)] flex items-center justify-center"
@@ -123,12 +183,24 @@ function PickerContent({
               className="w-8 h-8 rounded border-2 border-[var(--ink)] cursor-pointer bg-transparent p-0"
               aria-label={copy.chooseCustom}
             />
-            <span className="font-mono text-xs font-bold uppercase bg-[var(--surface)] px-2.5 py-1.5 rounded border border-[var(--ink)] flex-1 text-center">
-              {currentColor}
-            </span>
+            <input
+              type="text"
+              value={hexInput}
+              onChange={(event) => handleHexChange(event.target.value)}
+              onBlur={commitHexInput}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") event.currentTarget.blur();
+              }}
+              maxLength={7}
+              autoComplete="off"
+              spellCheck={false}
+              aria-label={copy.hexCode}
+              placeholder="#RRGGBB"
+              className="min-w-0 w-24 font-mono text-xs font-bold uppercase bg-[var(--surface)] px-2.5 py-1.5 rounded border border-[var(--ink)] flex-1 text-center text-[var(--ink)]"
+            />
             <button
               type="button"
-              onClick={() => applyColor("#ff5a1f")}
+              onClick={() => applyColor(DEFAULT_ACCENT)}
               title={copy.resetTo}
               className="p-1.5 rounded border border-[var(--ink)] hover:bg-[var(--surface)] font-mono text-xs flex items-center gap-1 cursor-pointer"
             >
@@ -144,7 +216,7 @@ function PickerContent({
 
 // Desktop floating button + popover version
 export function ThemeColorPicker({ drawerMode, locale = "en" }: { drawerMode?: boolean; locale?: Locale }) {
-  const { currentColor, applyColor } = useThemeColor();
+  const { currentColor, applyColor, isDark, toggleMode } = useThemeColor();
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -174,6 +246,8 @@ export function ThemeColorPicker({ drawerMode, locale = "en" }: { drawerMode?: b
         <PickerContent
           currentColor={currentColor}
           applyColor={applyColor}
+          isDark={isDark}
+          toggleMode={toggleMode}
           showClose={false}
           locale={locale}
         />
@@ -187,7 +261,7 @@ export function ThemeColorPicker({ drawerMode, locale = "en" }: { drawerMode?: b
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="theme-picker-button flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-[var(--ink)] bg-[#fffaf0] font-mono text-xs font-bold text-[var(--ink)] shadow-[2px_2px_0_var(--ink)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer"
+        className="theme-picker-button flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-[var(--ink)] bg-[var(--card)] font-mono text-xs font-bold text-[var(--ink)] shadow-[2px_2px_0_var(--ink)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer"
         aria-label={localeCopy[locale].theme.picker}
         title={localeCopy[locale].theme.pickerTitle}
       >
@@ -202,13 +276,15 @@ export function ThemeColorPicker({ drawerMode, locale = "en" }: { drawerMode?: b
 
       {isOpen && (
         <div
-          className="absolute right-0 top-full mt-2 w-72 rounded-lg border-2 border-[var(--ink)] bg-[#fffaf0] p-4 shadow-[5px_5px_0_var(--ink)] z-50 animate-in fade-in zoom-in-95 duration-150"
+          className="absolute right-0 top-full mt-2 w-72 rounded-lg border-2 border-[var(--ink)] bg-[var(--card)] p-4 shadow-[5px_5px_0_var(--ink)] z-50 animate-in fade-in zoom-in-95 duration-150"
           role="dialog"
           aria-label={localeCopy[locale].theme.dialog}
         >
           <PickerContent
             currentColor={currentColor}
             applyColor={applyColor}
+            isDark={isDark}
+            toggleMode={toggleMode}
             onClose={() => setIsOpen(false)}
             showClose
             locale={locale}

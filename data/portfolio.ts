@@ -472,6 +472,7 @@ export const portfolioFr = {
     role: "Étudiant en génie logiciel",
     statement: "Je conçois des logiciels fiables et des systèmes intégrant l’IA, du développement d’applications à l’architecture logicielle, jusqu’à la mise en production de fonctionnalités intelligentes.",
     availability: "À la recherche d’un stage de fin d’études de 6 mois · Disponible dès janvier 2027",
+    resumeUrl: "/resume-fr.pdf",
     portrait: { ...profile.portrait, alt: "Portrait de Jemmali Mohamed Mayssen" },
   },
   projects: projects.map((project) => {

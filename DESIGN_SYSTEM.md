@@ -18,7 +18,7 @@ Use the centralized CSS tokens in `app/globals.css`:
 
 - `--paper: #f4efe4` — warm off-white page background
 - `--ink: #141412` — near-black text, borders, and shadows
-- `--accent: #ff5a1f` — the only signal color
+- `--accent: #4d85ff` — the only signal color
 - `--surface: #e8e1d4` — neutral secondary surface
 - `--hard-shadow: 6px 6px 0 var(--ink)` — standard hard shadow
 

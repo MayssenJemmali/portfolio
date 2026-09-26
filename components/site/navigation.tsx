@@ -133,7 +133,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="flex items-center justify-center w-10 h-10 rounded-lg border-2 border-[var(--ink)] bg-[#fffaf0] shadow-[2.5px_2.5px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer"
+            className="flex items-center justify-center w-10 h-10 rounded-lg border-2 border-[var(--ink)] bg-[var(--card)] shadow-[2.5px_2.5px_0_var(--ink)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer"
             aria-label={copy.navigation.openMenu}
             aria-expanded={mobileMenuOpen}
           >
@@ -156,7 +156,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
       <aside
         className={cn(
           "mobile-sidebar fixed top-0 right-0 z-50 h-full w-[18rem] max-w-[85vw]",
-          "border-l-2 border-[var(--ink)] bg-[#fffaf0] shadow-[-6px_0_0_var(--ink)]",
+          "border-l-2 border-[var(--ink)] bg-[var(--card)] shadow-[-6px_0_0_var(--ink)]",
           "flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
@@ -171,7 +171,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
           <button
             type="button"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-center w-8 h-8 rounded-md border-2 border-[var(--ink)] bg-white shadow-[2px_2px_0_var(--ink)] hover:bg-[var(--surface)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+            className="flex items-center justify-center w-8 h-8 rounded-md border-2 border-[var(--ink)] bg-[var(--card)] shadow-[2px_2px_0_var(--ink)] hover:bg-[var(--surface)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
             aria-label={copy.navigation.closeMenu}
           >
             <X className="w-4 h-4 text-[var(--ink)]" />
@@ -193,8 +193,8 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
                     "flex items-center justify-between px-4 py-3 rounded-lg border-2 border-[var(--ink)]",
                     "font-sans font-extrabold text-base transition-all",
                     isActive
-                      ? "bg-[var(--ink)] text-[#fffaf0] shadow-[3px_3px_0_var(--accent)]"
-                      : "bg-white text-[var(--ink)] shadow-[3px_3px_0_var(--ink)] hover:bg-[var(--surface)]"
+                      ? "bg-[var(--ink)] text-[var(--on-ink)] shadow-[3px_3px_0_var(--accent)]"
+                      : "bg-[var(--card)] text-[var(--ink)] shadow-[3px_3px_0_var(--ink)] hover:bg-[var(--surface)]"
                   )}
                   aria-current={isActive ? "location" : undefined}
                 >
@@ -232,7 +232,7 @@ export function Navigation({ resumeUrl = "/resume-en.pdf" }: { resumeUrl?: strin
             href={resumeUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border-2 border-[var(--ink)] bg-[var(--surface)] font-bold text-sm text-[var(--ink)] shadow-[3px_3px_0_var(--ink)] hover:bg-[var(--accent)] hover:text-white transition-colors"
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border-2 border-[var(--ink)] bg-[var(--surface)] font-bold text-sm text-[var(--ink)] shadow-[3px_3px_0_var(--ink)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors"
           >
             <span>{copy.navigation.viewResume}</span>
             <ArrowUpRight className="w-4 h-4" />
